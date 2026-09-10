@@ -1,0 +1,11 @@
+Subject: Proposal: semantic recurrence optimizer as an additional modelx-cython backend
+
+Hi,
+
+I have been experimenting with a compiler optimization for recurrence-heavy modelx/lifelib models. The simple idea is to keep the existing recursive Cells as the model source, but when the dependency graph proves a time recurrence such as x(t) -> x(t-1), lower the whole subgraph to one Cython loop with rolling state, fuse PV reductions into that loop, and parallelize independent model points with OpenMP. Unsupported subgraphs fall back to the current modelx-cython Cell/cache compiler.
+
+I adjusted the prototype to preserve the modelx exported-package API and the sample/spec workflow, so I think it could fit as an optimizer tier rather than a competing framework. On the same machine and 10,000 model points, current modelx-cython 0.0.9 took 9.41 s / 8.74 s / 0.863 s on BasicTerm_S / SE / SC. The semantic compiler took 223 / 71 / 222 ms on one core and 40.6 / 15.2 / 40.4 ms on 9 OpenMP cores.
+
+The attached compact proposal explains the transformation, API idea, benchmark method, correctness checks, and why I think the optimal design is hybrid: semantic lowering where safe, current modelx-cython otherwise, exported Python as final fallback.
+
+I would be interested in your view on whether an optional semantic IR emitted by model.export() and an `mx2cy --optimizer auto` mode could fit the project direction.

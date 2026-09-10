@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modelx-semantic-compiler"
+version = "0.3.0"
+description = "Experimental modelx-compatible semantic Cython/OpenMP compiler"
+requires-python = ">=3.11"
+dependencies = ["modelx", "numpy", "pandas", "Cython", "setuptools"]
+
+[project.scripts]
+mx2native = "modelx_native.cli:entry_point_main"
+mx2cy-semantic = "modelx_native.cli:entry_point_main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["modelx_native*"]

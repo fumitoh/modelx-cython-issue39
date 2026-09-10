@@ -1,0 +1,39 @@
+{
+  "export_package": "VA_US_S_mxg_e6aefd4967_nomx",
+  "compiled_package": "VA_US_S_mxg_e6aefd4967_nomx_cy",
+  "target": {
+    "space_path": [
+      "Projection"
+    ],
+    "point_parameter_count": 1,
+    "representative_point": [
+      1
+    ],
+    "cell_name": "bench_net_cf",
+    "cell_args": []
+  },
+  "sample_point_count": 9,
+  "sample_point_fingerprint": "52a2e59ef4164d4ca94e6877d657d3486ea34b1d1d63080787bdae7b55d4f181",
+  "export_seconds": 1.407457927998621,
+  "translate_compile_seconds": 80.42789385200012,
+  "total_seconds": 81.83573026900194,
+  "package_bytes": 23989672,
+  "shared_library_bytes": 9484024,
+  "stdout_path": "/mnt/data/lfl_benchmark/mxcy/VA_US_S_retry/mxg_bridge_build.stdout.txt",
+  "stderr_path": "/mnt/data/lfl_benchmark/mxcy/VA_US_S_retry/mxg_bridge_build.stderr.txt",
+  "staged_external_files": [
+    "cdsc_table.csv",
+    "fund_table.csv",
+    "gawa_pct_table.csv",
+    "model.md",
+    "model_point_table.csv",
+    "mort_table.csv",
+    "product-spec.md",
+    "rate_scenario.csv",
+    "return_scenario.csv",
+    "run.py",
+    "sources.md",
+    "technical-notes.md",
+    "transaction_table.csv"
+  ]
+}

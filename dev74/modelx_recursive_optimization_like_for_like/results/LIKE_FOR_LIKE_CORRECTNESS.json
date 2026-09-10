@@ -1,0 +1,52 @@
+{
+  "BasicTerm_S": {
+    "policy_count": 10000,
+    "fast_recursive_vs_reference_max_abs": 0.0,
+    "fast_recursive_allclose_1e12": true,
+    "sequential_vs_recursive_exact": true,
+    "modelx_cython_checksums": [
+      14489630.534601538,
+      14489630.534601538,
+      14489630.534601538,
+      14489630.534601538,
+      14489630.534601538
+    ]
+  },
+  "Term_UK_A": {
+    "policy_count": 8,
+    "modelx_cython_checksums": [
+      -18242.075165349128,
+      -18242.075165349128,
+      -18242.075165349128,
+      -18242.075165349128,
+      -18242.075165349128
+    ]
+  },
+  "WOL_UK_S": {
+    "policy_count": 7,
+    "fast_recursive_vs_reference_max_abs": 9.276845958083868e-11,
+    "fast_recursive_allclose_1e12": true,
+    "modelx_cython_checksums": [
+      -17894.242029082296,
+      -17894.242029082296,
+      -17894.242029082296,
+      -17894.242029082296,
+      -17894.242029082296
+    ]
+  },
+  "ULSG_US_S": {
+    "policy_count": 4,
+    "fast_recursive_vs_reference_max_abs": 5.820766091346741e-11,
+    "fast_recursive_allclose_1e12": true
+  },
+  "VA_US_S": {
+    "policy_count": 9,
+    "modelx_cython_checksums": [
+      -20208.67757560163,
+      -20208.67757560163,
+      -20208.67757560163,
+      -20208.67757560163,
+      -20208.67757560163
+    ]
+  }
+}

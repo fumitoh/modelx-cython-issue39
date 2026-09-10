@@ -1,0 +1,13 @@
+{
+  "name": "ULSG_US_S",
+  "read_s": 0.0725523199980671,
+  "export_s": 0.7716342620005889,
+  "policy_count": 4,
+  "keys": [
+    "1",
+    "2",
+    "3",
+    "4"
+  ],
+  "dest": "/mnt/data/lfl_benchmark/export/ULSG_US_S_env/ULSG_US_S"
+}

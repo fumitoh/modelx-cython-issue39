@@ -1,0 +1,4 @@
+UserWarning: call stack trace activated
+UserWarning: call stack trace deactivated
+{"event": "trace", "seconds": 10.36195685200073, "sample": [1, 2], "nodes": 131564, "run_keys": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+{"event": "error", "error": "NativeBatchError: Cells phi_glwb_vix was not observed in the representative trace", "seconds": 22.671523795997928}

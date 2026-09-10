@@ -1,0 +1,34 @@
+{
+  "export_package": "BasicTerm_S_mxg_f32da97f78_nomx",
+  "compiled_package": "BasicTerm_S_mxg_f32da97f78_nomx_cy",
+  "target": {
+    "space_path": [
+      "Projection"
+    ],
+    "point_parameter_count": 1,
+    "representative_point": [
+      1
+    ],
+    "cell_name": "pv_net_cf",
+    "cell_args": []
+  },
+  "sample_point_count": 67,
+  "sample_point_fingerprint": "0ba4a738b0e86d6b823e0f56e3cff50baf4db587050596889fed193f23a35124",
+  "export_seconds": 0.981196982000256,
+  "translate_compile_seconds": 24.80409212000086,
+  "total_seconds": 25.785886269997718,
+  "package_bytes": 8902326,
+  "shared_library_bytes": 3693832,
+  "stdout_path": "/mnt/data/lfl_benchmark/mxcy/BasicTerm_S/mxg_bridge_build.stdout.txt",
+  "stderr_path": "/mnt/data/lfl_benchmark/mxcy/BasicTerm_S/mxg_bridge_build.stderr.txt",
+  "staged_external_files": [
+    "basic_term_sample.xlsx",
+    "create_premium_table.ipynb",
+    "generate_model_points.ipynb",
+    "generate_model_points_ASL.ipynb",
+    "generate_model_points_with_duration.ipynb",
+    "run_sc.py",
+    "sample.py",
+    "spec.py"
+  ]
+}

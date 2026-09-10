@@ -1,0 +1,16 @@
+{
+  "name": "WOL_UK_S",
+  "read_s": 0.03657583099993644,
+  "export_s": 0.35977258300044923,
+  "policy_count": 7,
+  "keys": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "dest": "/mnt/data/lfl_benchmark/export/WOL_UK_S_env/WOL_UK_S"
+}

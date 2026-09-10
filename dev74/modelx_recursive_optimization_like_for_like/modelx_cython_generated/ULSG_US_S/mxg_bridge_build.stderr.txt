@@ -1,0 +1,26 @@
+
+Error compiling Cython file:
+------------------------------------------------------------
+...
+
+        0.0028709 at the **[std]** 3.50% current rate, matching the notes.  The floor is
+        the contractual 2.0% guaranteed minimum [S3][S5][S7]; it does not bind at the
+        snapshot scale.
+        """
+        return max((1 + self.crediting_rate_ann(t)) ** (1 / 12) - 1, self.guar_rate_mth())
+                                                                                       ^
+------------------------------------------------------------
+ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py:1047:87: complex types are unordered
+Traceback (most recent call last):
+  File "/mnt/data/lfl_benchmark/mxcy/ULSG_US_S/setup.py", line 7, in <module>
+    ext_modules=cythonize([
+        "ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_sys.py",
+    ...<2 lines>...
+        annotate=True
+    )
+  File "/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py", line 1153, in cythonize
+    cythonize_one(*args)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py", line 1297, in cythonize_one
+    raise CompileError(None, pyx_file)
+Cython.Compiler.Errors.CompileError: ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py

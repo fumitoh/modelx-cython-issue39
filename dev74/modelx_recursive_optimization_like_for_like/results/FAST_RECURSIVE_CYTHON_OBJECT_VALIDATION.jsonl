@@ -1,0 +1,5 @@
+{"model": "BasicTerm_S", "policies": 1000, "cython_object_s": 1.559593087000394, "max_abs_error": 0.0, "allclose_1e12": true, "checksum": 1345061.18980961}
+{"model": "WOL_UK_S", "policies": 7, "cython_object_s": 0.9018696590001127, "max_abs_error": 0.0, "allclose_1e12": true, "checksum": -17894.2420290822}
+{"model": "ULSG_US_S", "policies": 4, "cython_object_s": 0.29612423800017496, "max_abs_error": 0.0, "allclose_1e12": true, "checksum": -796540.656257413}
+{"model": "Term_UK_A", "policies": 8, "cython_object_s": 0.022117427000011958, "max_abs_error": 0.0, "allclose_1e12": true, "checksum": -18242.075165349128}
+{"model": "VA_US_S", "policies": 9, "cython_object_s": 3.8340532689999236, "max_abs_error": 0.0, "allclose_1e12": true, "checksum": -20208.677575601574}

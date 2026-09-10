@@ -1,0 +1,35 @@
+{
+  "export_package": "Term_UK_A_mxg_778c82b8ac_nomx",
+  "compiled_package": "Term_UK_A_mxg_778c82b8ac_nomx_cy",
+  "target": {
+    "space_path": [
+      "Projection"
+    ],
+    "point_parameter_count": 1,
+    "representative_point": [
+      1
+    ],
+    "cell_name": "bench_net_cf",
+    "cell_args": []
+  },
+  "sample_point_count": 8,
+  "sample_point_fingerprint": "06505b6e7de5278ab058aa4ccc05ddb3c1e5d4dcd53f44e11e6a44a32cbd9898",
+  "export_seconds": 0.4350719100002607,
+  "translate_compile_seconds": 23.949715218001074,
+  "total_seconds": 24.385592610000458,
+  "package_bytes": 10730789,
+  "shared_library_bytes": 4368464,
+  "stdout_path": "/mnt/data/lfl_benchmark/mxcy/Term_UK_A/mxg_bridge_build.stdout.txt",
+  "stderr_path": "/mnt/data/lfl_benchmark/mxcy/Term_UK_A/mxg_bridge_build.stderr.txt",
+  "staged_external_files": [
+    "lapse_table.csv",
+    "model.md",
+    "model_point_table.csv",
+    "mort_table.csv",
+    "product-spec.md",
+    "run.py",
+    "select_factor_table.csv",
+    "sources.md",
+    "technical-notes.md"
+  ]
+}

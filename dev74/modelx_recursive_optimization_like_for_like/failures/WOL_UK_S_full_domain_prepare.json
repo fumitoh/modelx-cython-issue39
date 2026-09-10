@@ -1,0 +1,662 @@
+{
+  "model": "WOL_UK_S",
+  "sample": [
+    1,
+    5,
+    6
+  ],
+  "run_keys": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "trace_s": 5.5513995949986565,
+  "trace_nodes": 67054,
+  "stage_prepare_s": 10.599084882996976,
+  "stage_validation": {
+    "point_count": 7,
+    "execution_point_count": 7,
+    "complete_run_domain_validated": true,
+    "max_abs_error": 9.276845958083868e-11,
+    "max_scaled_relative_error": 1.620159243153353e-14,
+    "exact": false,
+    "allclose_1e12": true,
+    "bad_count": 0,
+    "bad_positions": [],
+    "bad_keys": [],
+    "checksum": -17894.242029082096
+  },
+  "stage_plan": {
+    "available": true,
+    "reason": null,
+    "output_name": "bench_net_cf",
+    "base_space_name": "WOL_UK_S.Projection",
+    "sample_keys": [
+      1,
+      5,
+      6
+    ],
+    "point_count": 7,
+    "optimization_level": "O2",
+    "emission_mode": "direct_locals",
+    "input_names": [
+      "p_1",
+      "p_2",
+      "g_3",
+      "p_4",
+      "p_5",
+      "p_6",
+      "g_7",
+      "g_8",
+      "g_9",
+      "g_10",
+      "g_11",
+      "p_12",
+      "g_13",
+      "g_14",
+      "g_15",
+      "p_16",
+      "p_17",
+      "exttn_18",
+      "p_19",
+      "p_20",
+      "g_21",
+      "g_22",
+      "g_23",
+      "g_24",
+      "p_25",
+      "g_26",
+      "g_27",
+      "g_28",
+      "g_29",
+      "g_30",
+      "g_31",
+      "extmeta_32",
+      "exttn_33",
+      "p_34"
+    ],
+    "history_count": 0,
+    "ring_count": 4,
+    "scalar_count": 15,
+    "fused_reduction_count": 1,
+    "previous_scalar_count": 0,
+    "trace_source": "realized_trace",
+    "optimized_program_ready": true,
+    "optimized_python_ready": true,
+    "optimized_python_correct": true,
+    "cython_ready": true,
+    "python_reason": null,
+    "cython_reason": null,
+    "guard_count": 1,
+    "stage_program_ready": true,
+    "stage_program_uid": "stage_optimized_program_0e83cb8ca956bc22",
+    "execution_plan_uid": "stage_execution_plan_685ac5f5c212f9f6",
+    "storage_plan_uid": "stage_storage_plan_4254d970b3b28a10"
+  },
+  "stage_input_order": [
+    "p_1",
+    "p_2",
+    "g_3",
+    "p_4",
+    "p_5",
+    "p_6",
+    "g_7",
+    "g_8",
+    "g_9",
+    "g_10",
+    "g_11",
+    "p_12",
+    "g_13",
+    "g_14",
+    "g_15",
+    "p_16",
+    "p_17",
+    "exttn_18",
+    "p_19",
+    "p_20",
+    "g_21",
+    "g_22",
+    "g_23",
+    "g_24",
+    "p_25",
+    "g_26",
+    "g_27",
+    "g_28",
+    "g_29",
+    "g_30",
+    "g_31",
+    "extmeta_32",
+    "exttn_33",
+    "p_34"
+  ],
+  "output_uid": "v_48e82a135007",
+  "variants": [
+    {
+      "uid": "v_0018754bd3ad",
+      "source_name": "age_at_entry",
+      "role": "scalar",
+      "dtype": "int64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_0018754bd3ad():\n    return int(point_input('p_2'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_d0eaf3265ed2",
+      "source_name": "proj_len",
+      "role": "scalar",
+      "dtype": "int64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_d0eaf3265ed2():\n    return 12 * (global_input('g_3') - v_0018754bd3ad())",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_087ef9eedc4b",
+      "source_name": "cessation_mths",
+      "role": "scalar",
+      "dtype": "int64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_087ef9eedc4b():\n    return int(point_input('p_4'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_d7573e5c34b9",
+      "source_name": "premium_mth",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_d7573e5c34b9():\n    return float(point_input('p_5'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_fb2fd68f2b83",
+      "source_name": "esc_prem_step",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_fb2fd68f2b83():\n    e = point_input('p_6')\n    if e == 0:\n        return 0.0\n    if e == 1:\n        return global_input('g_7') * global_input('g_8')\n    return min(max(global_input('g_9') * global_input('g_10'), 0.0), global_input('g_11')) * global_input('g_8')",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_881153203729",
+      "source_name": "duration",
+      "role": "coordinate",
+      "dtype": "int64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_881153203729(t):\n    return (t - 1) // 12",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_4163499708dc",
+      "source_name": "policy_year",
+      "role": "coordinate",
+      "dtype": "int64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_4163499708dc(t):\n    return v_881153203729(t) + 1",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_f1f8c6f9858e",
+      "source_name": "premium_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_f1f8c6f9858e(t):\n    if v_087ef9eedc4b() > 0 and t > v_087ef9eedc4b():\n        return 0.0\n    return v_d7573e5c34b9() * (1.0 + v_fb2fd68f2b83()) ** (v_4163499708dc(t) - 1)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_48e899e59a60",
+      "source_name": "pols_if_init",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_48e899e59a60():\n    return float(point_input('p_1'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_6d03c211d769",
+      "source_name": "pols_if",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_6d03c211d769(t):\n    if t < 1 or t > v_d0eaf3265ed2():\n        return 0.0\n    if t == 1:\n        return v_48e899e59a60()\n    return v_6d03c211d769(t - 1) * (1.0 - v_9691d5b1cad4(t - 1)) * (1.0 - v_dca164a86b17(t - 1))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_56a90e1fadcf",
+      "source_name": "premiums",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_56a90e1fadcf(t):\n    return v_f1f8c6f9858e(t) * v_6d03c211d769(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_ca26d4194058",
+      "source_name": "age",
+      "role": "coordinate",
+      "dtype": "int64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_ca26d4194058(t):\n    return v_0018754bd3ad() + v_881153203729(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_c783ba20651a",
+      "source_name": "mort_loading",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_c783ba20651a():\n    return global_input('g_13') if point_input('p_12') == 0 else global_input('g_14')",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_e5124f4a3444",
+      "source_name": "mort_improve_factor",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_e5124f4a3444(t):\n    return (1.0 - global_input('g_15')) ** (v_4163499708dc(t) - 1)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_6a925f67e581",
+      "source_name": "mort_rate",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_6a925f67e581(t):\n    q = float(table_input('exttn_18', 0 if point_input('p_12') == 0 else 1, point_input('p_16'), point_input('p_17'), __exact_axis_code__(v_ca26d4194058(t), 18, 1, 103)))\n    return min(1.0, q * v_c783ba20651a() * v_e5124f4a3444(t))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_9691d5b1cad4",
+      "source_name": "mort_rate_mth",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_9691d5b1cad4(t):\n    return 1.0 - (1.0 - v_6a925f67e581(t)) ** (1.0 / 12.0)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_45e36b4cfa88",
+      "source_name": "pols_death",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_45e36b4cfa88(t):\n    return v_6d03c211d769(t) * v_9691d5b1cad4(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_9436baa68f18",
+      "source_name": "moratorium_mths",
+      "role": "scalar",
+      "dtype": "int64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_9436baa68f18():\n    return int(point_input('p_19'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_71a858b6427b",
+      "source_name": "in_moratorium",
+      "role": "coordinate",
+      "dtype": "bool",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_71a858b6427b(t):\n    return t <= v_9436baa68f18()",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_fbe2ee8c3de5",
+      "source_name": "prem_cum_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_fbe2ee8c3de5(t):\n    if t <= 0:\n        return 0.0\n    return v_fbe2ee8c3de5(t - 1) + v_f1f8c6f9858e(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_002d35e02c59",
+      "source_name": "benefit_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_002d35e02c59(t):\n    if point_input('p_12') == 0 and v_71a858b6427b(t):\n        return v_fbe2ee8c3de5(t)\n    return v_f2a7f830f2b5(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_8d6e86aba264",
+      "source_name": "sum_assured",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_8d6e86aba264():\n    return float(point_input('p_20'))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_8b7e3dc6890c",
+      "source_name": "esc_cover_step",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_8b7e3dc6890c():\n    e = point_input('p_6')\n    if e == 0:\n        return 0.0\n    if e == 1:\n        return global_input('g_21') * global_input('g_8')\n    return min(max(global_input('g_10'), 0.0), global_input('g_22')) * global_input('g_8')",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_f2a7f830f2b5",
+      "source_name": "cover_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_f2a7f830f2b5(t):\n    return v_8d6e86aba264() * (1.0 + v_8b7e3dc6890c()) ** (v_4163499708dc(t) - 1)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_1f417154a7db",
+      "source_name": "benefit_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_1f417154a7db(t):\n    if point_input('p_12') != 0:\n        return v_f2a7f830f2b5(t)\n    if v_71a858b6427b(t):\n        return v_f2a7f830f2b5(t)\n    return v_261d66058626() * v_f2a7f830f2b5(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_e5fb0b04845d",
+      "source_name": "benefit_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_e5fb0b04845d(t):\n    if point_input('p_12') == 0:\n        return (1.0 - global_input('g_23')) * v_002d35e02c59(t) + global_input('g_23') * v_1f417154a7db(t)\n    if t <= 12:\n        return (1.0 - global_input('g_24')) * v_f2a7f830f2b5(t) + global_input('g_24') * v_fbe2ee8c3de5(t)\n    return v_f2a7f830f2b5(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_7f927c265f15",
+      "source_name": "claims",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_7f927c265f15(t):\n    return v_45e36b4cfa88(t) * v_e5fb0b04845d(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_86774bd9246e",
+      "source_name": "pu_variant",
+      "role": "scalar",
+      "dtype": "bool",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_86774bd9246e():\n    v = bool(point_input('p_25'))\n    if v and v_087ef9eedc4b() <= 0:\n        __guard_fail__(1)\n    return v",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_b5101875359b",
+      "source_name": "pu_benefit",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_b5101875359b(t):\n    if t < 1 or t > v_d0eaf3265ed2() or (not v_86774bd9246e()):\n        return 0.0\n    if t == 1:\n        return 0.0\n    __mx_h_result_0 = v_6d03c211d769(t - 1) * (1.0 - v_9691d5b1cad4(t - 1)) * v_dca164a86b17(t - 1) if (False if not v_86774bd9246e() else (t - 1 if v_087ef9eedc4b() <= 0 else min(t - 1, v_087ef9eedc4b())) >= v_087ef9eedc4b() / 2.0) else 0.0\n    return v_b5101875359b(t - 1) * (1.0 - v_9691d5b1cad4(t - 1)) + __mx_h_result_0 * v_7fbfc86fd6a7(t - 1)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_5200e3fc2c0d",
+      "source_name": "claims",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_5200e3fc2c0d(t):\n    return v_b5101875359b(t) * v_9691d5b1cad4(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_29fce575a104",
+      "source_name": "claims",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_29fce575a104(t):\n    return 0.0",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_ce648ae213c6",
+      "source_name": "claims",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_ce648ae213c6(t):\n    return 0 + v_7f927c265f15(t) + v_5200e3fc2c0d(t) + v_29fce575a104(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_9ce2efb30a11",
+      "source_name": "expense_acq_pp",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_9ce2efb30a11():\n    return global_input('g_26') if point_input('p_12') == 0 else global_input('g_27')",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_f9b27f4eb703",
+      "source_name": "expense_maint_pp",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_f9b27f4eb703():\n    return global_input('g_28') if point_input('p_12') == 0 else global_input('g_29')",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_b96fffd05d69",
+      "source_name": "inflation_factor",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_b96fffd05d69(t):\n    return (1.0 + global_input('g_30')) ** (v_4163499708dc(t) - 1)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_d66b41911940",
+      "source_name": "pols_pu",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_d66b41911940(t):\n    if t < 1 or t > v_d0eaf3265ed2() or (not v_86774bd9246e()):\n        return 0.0\n    if t == 1:\n        return 0.0\n    __mx_h_result_0 = v_6d03c211d769(t - 1) * (1.0 - v_9691d5b1cad4(t - 1)) * v_dca164a86b17(t - 1) if (False if not v_86774bd9246e() else (t - 1 if v_087ef9eedc4b() <= 0 else min(t - 1, v_087ef9eedc4b())) >= v_087ef9eedc4b() / 2.0) else 0.0\n    return v_d66b41911940(t - 1) * (1.0 - v_9691d5b1cad4(t - 1)) + __mx_h_result_0",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_5ee64001942e",
+      "source_name": "pols_all",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_5ee64001942e(t):\n    return v_6d03c211d769(t) + v_d66b41911940(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_caa4106c8023",
+      "source_name": "expenses",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_caa4106c8023(t):\n    acq = v_9ce2efb30a11() * v_6d03c211d769(t) if t == 1 else 0.0\n    return acq + v_f9b27f4eb703() / 12.0 * v_b96fffd05d69(t) * v_5ee64001942e(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_319b8be529df",
+      "source_name": "commissions",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_319b8be529df(t):\n    if v_4163499708dc(t) > 1:\n        return 0.0\n    return global_input('g_31') * v_56a90e1fadcf(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_848204f3aaf6",
+      "source_name": "net_cf",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_848204f3aaf6(t):\n    return v_56a90e1fadcf(t) - v_ce648ae213c6(t) - v_caa4106c8023(t) - v_319b8be529df(t)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_f70ccd185689",
+      "source_name": "lapse_rate_base",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_f70ccd185689(t):\n    y = v_4163499708dc(t)\n    return float(table_input('exttn_33', point_input('p_12'), __exact_axis_code__(min(y, int(table_input('extmeta_32', point_input('p_12')))), 1, 1, 6)))",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_cba9652cd3b4",
+      "source_name": "lapse_rate",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_cba9652cd3b4(t):\n    if v_087ef9eedc4b() > 0 and t > v_087ef9eedc4b():\n        return 0.0\n    w = v_f70ccd185689(t)\n    return min(1.0, w)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_dca164a86b17",
+      "source_name": "lapse_rate_mth",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_dca164a86b17(t):\n    return 1.0 - (1.0 - v_cba9652cd3b4(t)) ** (1.0 / 12.0)",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_261d66058626",
+      "source_name": "adb_multiplier",
+      "role": "scalar",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_261d66058626():\n    return 2.0 if bool(point_input('p_34')) else 1.0",
+      "reduction": "None"
+    },
+    {
+      "uid": "v_48e82a135007",
+      "source_name": "bench_net_cf",
+      "role": "reduction",
+      "dtype": "float64",
+      "time_param": null,
+      "arg_count": 0,
+      "formula": "def v_48e82a135007():\n    return sum((v_848204f3aaf6(t) for t in range(1, v_d0eaf3265ed2() + 1)))",
+      "reduction": "ReductionSpec(init=<ast.Constant object at 0x7ff17d767bd0>, target='_acc', loop_var='t', range_args=(<ast.Constant object at 0x7ff17d7f5290>, <ast.BinOp object at 0x7ff17d79e850>), body_expr=<ast.Call object at 0x7ff17d7542d0>, filters=())"
+    },
+    {
+      "uid": "v_7fbfc86fd6a7",
+      "source_name": "benefit_pp",
+      "role": "coordinate",
+      "dtype": "float64",
+      "time_param": "t",
+      "arg_count": 1,
+      "formula": "def v_7fbfc86fd6a7(t):\n    if not v_86774bd9246e():\n        return 0.0\n    if v_087ef9eedc4b() <= 0:\n        __mx_h_result_0 = t\n    else:\n        __mx_h_result_0 = min(t, v_087ef9eedc4b())\n    __mx_h_result_1 = v_087ef9eedc4b()\n    return v_f2a7f830f2b5(t) * __mx_h_result_0 / __mx_h_result_1",
+      "reduction": "None"
+    }
+  ],
+  "iteration_domains": [
+    {
+      "uid": "stage_iteration_domain_41ba6ff79afdedc2",
+      "stage_index": 0,
+      "parameter_name": "t",
+      "range_arg_sources": [
+        "1",
+        "v_d0eaf3265ed2() + 1"
+      ],
+      "range_arg_asts": [
+        "Constant(value=1)",
+        "BinOp(left=Call(func=Name(id='v_d0eaf3265ed2', ctx=Load())), op=Add(), right=Constant(value=1))"
+      ],
+      "coordinate_step": 1,
+      "scan_direction": "ascending",
+      "materialization_extension_min": 0,
+      "materialization_extension_max": 0,
+      "evidence_uids": [
+        "v_48e82a135007"
+      ],
+      "blockers": []
+    }
+  ],
+  "execution_blocks": [
+    {
+      "uid": "stage_execution_block_b48eec3f25c95d01",
+      "stage_index": 0,
+      "kind": "coordinate_scan",
+      "iteration_domain_uid": "stage_iteration_domain_41ba6ff79afdedc2",
+      "persistent_driver_uids": [
+        "v_6d03c211d769",
+        "v_b5101875359b",
+        "v_d66b41911940",
+        "v_fbe2ee8c3de5"
+      ],
+      "pre_scalar_uids": [
+        "v_0018754bd3ad",
+        "v_087ef9eedc4b",
+        "v_261d66058626",
+        "v_48e899e59a60",
+        "v_86774bd9246e",
+        "v_8b7e3dc6890c",
+        "v_8d6e86aba264",
+        "v_9436baa68f18",
+        "v_9ce2efb30a11",
+        "v_c783ba20651a",
+        "v_d0eaf3265ed2",
+        "v_d7573e5c34b9",
+        "v_f9b27f4eb703",
+        "v_fb2fd68f2b83"
+      ],
+      "reduction_uids": [
+        "v_48e82a135007"
+      ],
+      "post_scalar_uids": [],
+      "scan_direction": "ascending",
+      "blockers": []
+    }
+  ],
+  "legacy_error": "CodegenError: table input exttn_18 requires two indices",
+  "legacy_traceback": "Traceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/prepare_full_artifacts.py\", line 27, in <module>\n    t=time.perf_counter();lp=prepare_optimized_scalar(rc,sample_keys=sample,run_keys=keys,validation_points=len(keys));row['legacy_prepare_s']=time.perf_counter()-t;row['legacy_validation']=lp.python_validation;plan=plan_cython_backend(lp,emission_mode='direct_locals');row['legacy_plan']=plan.__dict__\n                             ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/native_batch.py\", line 528, in prepare_optimized_scalar\n    python_source = PythonLoopGenerator(optimized).emit(\"optimized_model\")\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 592, in emit\n    lines += self.helper(uid)\n             ~~~~~~~~~~~^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 533, in helper\n    emit_stmt(st, \"    \")\n    ~~~~~~~~~^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 512, in emit_stmt\n    lines.append(f\"{indent}l_{st.targets[0].id} = {self.expr(st.value, ctx)}\")\n                                                   ~~~~~~~~~^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 370, in expr\n    return f\"{name}({', '.join(self.expr(x, ctx) for x in n.args)})\"\n                     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 370, in <genexpr>\n    return f\"{name}({', '.join(self.expr(x, ctx) for x in n.args)})\"\n                               ~~~~~~~~~^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 368, in expr\n    return self._input_expr(name, n.args, ctx)\n           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/python_codegen.py\", line 106, in _input_expr\n    raise CodegenError(f\"table input {key} requires two indices\")\nmodelx_graph.codegen_common.CodegenError: table input exttn_18 requires two indices\n",
+  "live_reference_s": 4.0787765639979625,
+  "reference_checksum": -17894.2420290822
+}

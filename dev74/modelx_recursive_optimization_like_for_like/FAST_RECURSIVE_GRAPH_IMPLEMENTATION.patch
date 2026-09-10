@@ -1,0 +1,1567 @@
+--- a/compiler/modelx_graph/_version.py
++++ b/compiler/modelx_graph/_version.py
+@@ -1 +1 @@
+-__version__ = "0.23.0.dev73"
++__version__ = "0.23.0.dev74"
+--- a/compiler/modelx_graph/__init__.py
++++ b/compiler/modelx_graph/__init__.py
+@@ -315,3 +315,20 @@
+ ]
+ 
+ from .legacy_comparison import LegacyComparisonError, LegacyComparisonBundle, build_legacy_comparison_bundle
++
++from .fast_recursive_graph import (
++    FastRecursiveGraphError, FastRecursiveParameter, FastRecursiveBoundArg,
++    FastRecursiveCallSite, FastRecursiveExternalCall, FastRecursiveCell,
++    FastRecursiveSCC, FastRecursiveProgram, build_fast_recursive_program,
++)
++__all__ += [
++    'FastRecursiveGraphError','FastRecursiveParameter','FastRecursiveBoundArg',
++    'FastRecursiveCallSite','FastRecursiveExternalCall','FastRecursiveCell',
++    'FastRecursiveSCC','FastRecursiveProgram','build_fast_recursive_program',
++]
++
++from .fast_recursive_python import emit_fast_recursive_python, write_fast_recursive_python
++__all__ += ['emit_fast_recursive_python','write_fast_recursive_python']
++
++from .fast_recursive_cython import emit_fast_recursive_cython_object, write_fast_recursive_cython_object
++__all__ += ['emit_fast_recursive_cython_object','write_fast_recursive_cython_object']
+--- a/README.md
++++ b/README.md
+@@ -26,7 +26,7 @@
+ - `raw_evidence/` - fresh benchmark JSON/JSONL evidence.
+ - `helpers/` - pure-Python lookup helpers, native Cython lookup primitives, and helper tests.
+ - `MODEL_SYNTAX_GUIDE.md` - source syntax intended to serve both pure-Python and native execution.
+-- `compiler/modelx_graph/` - exact compiler snapshot used by this rerun (`0.23.0.dev73` lineage).
++- `compiler/modelx_graph/` - dev73 benchmark compiler snapshot plus the dev74 static fast-recursive graph extension.
+ - `benchmark_scripts/` - exact scripts used for export, modelx-cython builds, full-domain compilation and timing.
+ - `native_sources/` - successful full-domain fast-recursive sources and the BasicTerm compact sequential comparator, plus normalized input/reference snapshots.
+ - `generated_exports/` - standalone `model.export()` packages and small input files used by the pure-Python rerun.
+@@ -54,3 +54,24 @@
+ A missing native timing means the full-domain build/coverage contract did not complete; it must not be replaced by an older representative-policy number. The corresponding diagnostic is retained under `failures/`.
+ 
+ The fast-recursive WOL artifact is compiled from policies 1, 5 and 6 and then validated over all seven policies. ULSG uses policies 1, 3 and 4 and validates all four. The compilation sample does not define the benchmark population.
++
++## dev74 fast-recursive graph extension
++
++This package now also contains the next implementation stage described in `FAST_RECURSIVE_GRAPH_IMPLEMENTATION.md` and `FAST_RECURSIVE_GRAPH_RESULTS.md`.
++
++The compiler version is bumped to `0.23.0.dev74` for this extension. The corrected performance numbers under `results/LIKE_FOR_LIKE_*` remain the previously rerun dev73-lineage benchmark; dev74 changes graph construction, not those historical timing rows.
++
++New dev74 files:
++
++- `compiler/modelx_graph/fast_recursive_graph.py` — static exported-source recursive IR;
++- `compiler/modelx_graph/fast_recursive_python.py` — executable recursive reference emitter;
++- `benchmark_scripts/audit_fast_recursive_graph.py` — five-product graph census;
++- `benchmark_scripts/validate_fast_recursive_python.py` — reference-runtime parity harness;
++- `tests/test_fast_recursive_graph.py` — structural and executable acceptance tests;
++- `fast_recursive_graph/` — complete per-product graph manifests;
++- `fast_recursive_python/` — generated direct-recursive Python artifacts;
++- `results/FAST_RECURSIVE_GRAPH_COVERAGE.*` and `results/FAST_RECURSIVE_PYTHON_VALIDATION.jsonl` — evidence.
++
++For Term/WOL/ULSG/VA the small CSV inputs required by the bundled generated exports are now included beside those exports, so the new reference-runtime validation is self-contained apart from normal Python package dependencies.
++
++The dev74 graph stage also includes `fast_recursive_cython_object/`: generated Cython object-mode recursive modules for all five products. These are an ABI/graph proof, not the final numeric performance backend. Internal Cell functions are `cdef object` and call each other directly; provider/table operations intentionally remain Python-object operations. Build products are deliberately excluded from the ZIP and can be reproduced with the bundled `setup.py`.
+--- a/RESULTS.md
++++ b/RESULTS.md
+@@ -27,13 +27,13 @@
+ 
+ ## Corrected full-domain execution table
+ 
+-| Model | Policies | current `model.export()` | optimized recursive Python | current modelx-cython | fast recursive Cython | compact sequential Cython |
++| Model | Policies | current `model.export()` | optimized recursive Python | current modelx-cython | trace-derived typed recursive Cython (dev73) | compact sequential Cython |
+ |---|---:|---:|---:|---:|---:|---:|
+ | BasicTerm_S | 10,000 | 18.575 s | **6.378 s** | 8.763 s | **0.2443 s** | **0.2308 s** |
+ | Term_UK_A | 8 | 10.241 ms | **2.088 ms** | 8.203 ms | not produced: categorical table axis | not produced: same frontend blocker |
+ | WOL_UK_S | 7 | 599.705 ms | **37.708 ms** | 546.893 ms | **1.004 ms** | full-domain compact backend rejected 2-D table input |
+ | ULSG_US_S | 4 | 187.240 ms | **64.399 ms** | build failed | **1.963 ms** | full-domain compact backend rejected schedule/storage disagreement |
+-| VA_US_S | 9 | 2.532 s | **235.920 ms** | 2.320 s | full-domain artifact not produced in bounded rerun | no compact multistage backend |
++| VA_US_S | 9 | 2.532 s | **235.920 ms** | 2.320 s | old trace-derived frontend did not produce a bounded full-domain artifact | no compact multistage backend |
+ 
+ These are portfolio totals. Per-policy figures are available in `LIKE_FOR_LIKE_RESULTS.csv`.
+ 
+@@ -51,9 +51,9 @@
+ 
+ For Term/WOL/ULSG/VA the optimized variant is the provider-normalized + prepared model-point + merged-wrapper variant used in the earlier attribution work. The complete output vector and checksum remain unchanged.
+ 
+-## Fast recursive Cython result
++## dev73 typed fast-recursive Cython benchmark result
+ 
+-Three products currently have valid full-domain fast-recursive native artifacts in this rerun:
++The corrected performance rerun predates the dev74 static recursive graph implementation below. Three products had valid full-domain **typed numeric** fast-recursive artifacts through the old trace-derived frontend:
+ 
+ - BasicTerm_S: 0.2443 s / 10,000 policies = 24.43 us/policy.
+ - WOL_UK_S: 1.004 ms / 7 policies = 143.42 us/policy.
+@@ -95,12 +95,37 @@
+ 
+ The prior one-policy Term/WOL/ULSG sequential numbers are retained only in historical evidence, not the corrected headline comparison.
+ 
+-## Fast-recursive coverage limitations exposed by the rerun
++## What the dev73 rerun exposed, and what dev74 changes
+ 
+-The rerun also prevents overstating the current prototype:
++The old typed numeric prototype reused the graph compiler's trace-derived Stage artifact as its frontend. That exposed two distinct classes of limitation:
+ 
+-- Term_UK_A needs categorical exact lookup lowering in the native frontend. The included helper API (`exact*`) is intended to give this operation an explicit native-friendly representation, but that integration is not yet wired into this compiler snapshot.
+-- VA_US_S needs a bounded way to construct the full variant closure. A trace from policies 1 and 2 misses `phi_glwb_vix`; adding policy 6 makes the current Stage preparation too expensive for the bounded rerun. No full-domain fast-recursive timing is therefore reported.
++- `Term_UK_A` reached a categorical exact-lookup lowering blocker. This is a formula/provider problem, not a recursive-graph problem.
++- `VA_US_S` could not obtain a bounded full-domain program by unioning realized Stage traces; policies 1 and 2 missed `phi_glwb_vix`, while adding more policies made Stage preparation grow sharply. This was a **program-discovery/frontend problem**, not evidence that recursive execution requires VA's three-stage schedule.
++
++The dev74 implementation separates those concerns. It constructs the recursive Cell program statically from the exported source and deliberately treats unsupported table/provider syntax as downstream lowering work. All five products now have complete recursive graphs with zero graph blockers.
++
++## dev74 static fast-recursive graph implementation
++
++The new path does not consume `StageExecutionPlan`, recurrence schedules, scan directions, fences, materialized stage histories, or representative-policy trace closure. It parses exported `_f_<cell>` methods, includes every syntactic Cell call in every branch, binds calls to the callee's full signature, and defines memo identity as the complete Cell argument tuple.
++
++| Model | Cells | Cell call sites | Max Cell arity | Recursive SCCs | Largest recursive SCC | Graph blockers |
++|---|---:|---:|---:|---:|---:|---:|
++| BasicTerm_S | 35 | 68 | 1 | 1 | 4 | 0 |
++| Term_UK_A | 57 | 127 | 2 | 6 | 7 | 0 |
++| WOL_UK_S | 52 | 126 | 2 | 6 | 1 | 0 |
++| ULSG_US_S | 102 | 223 | 2 | 8 | 6 | 0 |
++| VA_US_S | 169 | 492 | 3 | 7 | **53** | 0 |
++
++VA is the decisive graph test. Its static closure includes the VIX-specific `phi_glwb_vix` path without executing a VIX policy first, and its 53-Cell recursive SCC is represented directly rather than converted into stages.
++
++The same IR emits two executable proof backends:
++
++1. a direct-recursive Python reference runtime; and
++2. a Cython object-mode recursive module in which Cell-to-Cell calls are direct `cdef` calls while pandas/table/module operations remain Python objects.
++
++Both are bit-exact against the bundled exported packages for all shipped Term/WOL/ULSG/VA policies; BasicTerm is bit-exact on the first 1,000 policies in the generic dev74 proof harness. All five Cython object-mode modules build successfully. In particular, the complete VA 169-Cell program compiles into one recursive Cython module and validates **9/9 policies with no Stage scheduler**.
++
++This is a graph/ABI acceptance result, not a new typed-native performance benchmark. The next step is to lower provider/table operations and primitive numeric values inside this static recursive program; the old dev73 typed performance rows remain the performance evidence until that work is complete.
+ 
+ ## Build/preparation evidence
+ 
+@@ -117,6 +142,6 @@
+ The corrected benchmark supports two claims cleanly:
+ 
+ 1. Pure-Python `model.export()` performance can improve substantially by normalizing lookup providers and preparing scalar inputs while retaining recursive Cells.
+-2. A compact recursive Cython runtime can be dramatically faster than current modelx-cython on full heterogeneous portfolios where the current prototype can construct and validate the numeric closure.
++2. A compact recursive Cython runtime can be dramatically faster than current modelx-cython where typed numeric lowering is available. The dev74 implementation now establishes that the **recursive graph itself** covers all five products, including full VA, independently of provider/table lowering.
+ 
+ It does **not** support using the earlier representative-policy Term/WOL/ULSG sequential timings as full-domain comparisons. Those values have been removed from the corrected table.
+--- a/GITHUB_ISSUE_COMMENT.md
++++ b/GITHUB_ISSUE_COMMENT.md
+@@ -1,10 +1,10 @@
+-Thanks - I reran the benchmarks from scratch because the previous native table mixed two protocols: the pure-Python/modelx-cython numbers used complete heterogeneous policy sets, while several recursive/sequential Cython numbers replicated one representative policy.
++Thanks - I reran the benchmarks under a strict like-for-like protocol, and I also changed the recursive prototype so its graph is no longer discovered from representative runtime traces.
+ 
+-The corrected benchmark now requires every reported execution number to run the **same complete shipped policy vector, in the same order, for the same target**. Build/preparation is measured separately.
++The two results are useful to separate: **provider/data lowering dominates much of the pure-Python cost, while the recursive graph itself can be built statically for all five test products, including VA.**
+ 
+ ## Pure Python
+ 
+-The `model.export()` optimization still holds under the corrected protocol:
++Every number below uses the complete shipped policy vector for the product:
+ 
+ | model | policies | current `model.export()` | optimized recursive Python | speedup |
+ |---|---:|---:|---:|---:|
+@@ -14,9 +14,9 @@
+ | ULSG_US_S | 4 | 187.240 ms | **64.399 ms** | 2.91x |
+ | VA_US_S | 9 | 2.532 s | **235.920 ms** | 10.73x |
+ 
+-The main change is still to prepare scalar lookup providers once rather than execute pandas/MultiIndex/step-table operations repeatedly inside hot Cells. Recursive Cell evaluation is preserved.
++The main optimization is to prepare scalar lookup providers once instead of repeatedly executing pandas/MultiIndex/step-table operations inside hot Cells. Recursive Cell evaluation is preserved.
+ 
+-I think it would be useful to support a small explicit lookup vocabulary such as:
++I included a small helper vocabulary for making those semantics explicit, for example:
+ 
+ ```python
+ from modelx_fast_lookup import exact4, grouped_step2
+@@ -36,51 +36,73 @@
+     )
+ ```
+ 
+-The source DataFrames can remain the public/source-of-truth objects. Preparation builds the compact provider. In pure Python the helper can use dictionaries/sorted arrays; modelx-cython can recognize the same call shape and lower it to encoded keys, typed arrays and inline binary search.
++In pure Python these can use prepared dictionaries/sorted arrays. A native backend can recognize the same call shapes and lower them to encoded keys, typed arrays and inline search.
+ 
+-## Fast recursive Cython
++## Corrected typed-native benchmark
+ 
+-I also rebuilt current modelx-cython and the fast-recursive prototypes and reran the complete policy sets:
++I rebuilt current modelx-cython and reran complete heterogeneous policy sets. The typed fast-recursive rows below are from the earlier trace-derived numeric backend; no representative-policy-only sequential timings are mixed into the table.
+ 
+-| model | policies | current modelx-cython | fast recursive Cython | compact sequential Cython |
++| model | policies | current modelx-cython | trace-derived typed recursive Cython | compact sequential Cython |
+ |---|---:|---:|---:|---:|
+ | BasicTerm_S | 10,000 | 8.763 s | **0.2443 s** | **0.2308 s** |
+-| Term_UK_A | 8 | 8.203 ms | not yet produced: categorical table axis | same frontend blocker |
+-| WOL_UK_S | 7 | 546.893 ms | **1.004 ms** | full-domain compact backend currently rejects a required 2-D table input |
++| Term_UK_A | 8 | 8.203 ms | categorical table lowering blocker | same frontend blocker |
++| WOL_UK_S | 7 | 546.893 ms | **1.004 ms** | full-domain compact backend currently rejects required 2-D table input |
+ | ULSG_US_S | 4 | build failed | **1.963 ms** | full-domain compact backend currently rejects a schedule/storage case |
+-| VA_US_S | 9 | 2.320 s | full-domain artifact not produced in the bounded rerun | no comparable compact multistage backend yet |
++| VA_US_S | 9 | 2.320 s | old trace-derived frontend did not produce a bounded full-domain artifact | no comparable compact multistage backend |
+ 
+-The BasicTerm fast-recursive and compact-sequential arrays are bit-identical over all 10,000 policies. The WOL fast-recursive artifact passes all 7 policies at `rtol=atol=1e-12`; ULSG passes all 4 policies at the same gate.
++BasicTerm recursive/sequential outputs are bit-exact over all 10,000 policies. WOL passes all 7 policies and ULSG all 4 at `rtol=atol=1e-12`.
+ 
+-The WOL artifact was compiled from a three-policy trace sample and then frozen and validated across all seven shipped policies. ULSG similarly used a three-policy compilation sample and was validated across all four policies. The timing populations above are therefore the complete heterogeneous portfolios, not repeated representative policies.
++The VA entry in that table turned out to be a limitation of the **trace-derived frontend**, not of recursive execution. Trying to discover one full-domain VA program by unioning realized Stage traces grew very expensive and could miss policy-dependent branches such as the VIX path.
+ 
+-Fresh modelx-cython builds took about 25.8 s for BasicTerm, 24.4 s for Term, 27.0 s for WOL and 81.8 s for VA. ULSG still fails during Cython compilation because the generated monthly crediting-rate expression is inferred as complex and then used in an ordered `max`.
++## Static fast-recursive graph implementation
+ 
+-An important correction from the rerun is that I am **dropping the earlier Term/WOL/ULSG compact-sequential timings from the comparison**. Those were useful physical-runtime experiments, but they were based on a representative-policy artifact and are not like-for-like with the full-policy results above. When rebuilt against the full policy domains, the current compact backend hits additional table/schedule cases. BasicTerm is currently the only clean full-domain recursive-vs-compact-sequential comparison in this set.
++I therefore implemented a separate recursive graph IR built directly from the exported source.
+ 
+-## Suggested implementation shape
++It does **not** use recurrence stages, scan scheduling, fences, materialized Stage histories, or representative-policy trace closure. It statically includes every syntactic Cell call in every branch, binds each call to the callee's full signature, and uses the complete Cell argument tuple as memo identity. Unsupported pandas/table/module syntax is recorded as downstream provider/formula work but does not prevent graph construction.
+ 
+-The source-level requirements can stay small:
++The resulting target closures are:
+ 
+-- explicit exact/step/grouped-step lookup helpers with primitive scalar arguments;
+-- prepared model-point columns rather than pandas row objects inside hot numeric Cells;
+-- ordinary recursive Cell formulas;
+-- fallback to the existing exported/modelx-cython path for unsupported Python behavior.
++| model | Cells | Cell call sites | max Cell arity | recursive SCCs | largest SCC | graph blockers |
++|---|---:|---:|---:|---:|---:|---:|
++| BasicTerm_S | 35 | 68 | 1 | 1 | 4 | 0 |
++| Term_UK_A | 57 | 127 | 2 | 6 | 7 | 0 |
++| WOL_UK_S | 52 | 126 | 2 | 6 | 1 | 0 |
++| ULSG_US_S | 102 | 223 | 2 | 8 | 6 | 0 |
++| VA_US_S | **169** | **492** | 3 | 7 | **53** | **0** |
+ 
+-That gives the same model syntax a pure-Python fast path and a native recursive path:
++VA is the useful stress case here. The static graph contains the VIX-specific `phi_glwb_vix` path without first executing a VIX policy, and it contains a 53-Cell recursive SCC. There is no three-stage representation in this path.
++
++I then emitted the same IR in two executable forms:
++
++1. a direct-recursive Python reference runtime; and
++2. Cython object mode, where every internal Cell is a `cdef` recursive function and Cell-to-Cell calls are direct C-level calls, while table/provider expressions intentionally remain Python objects.
++
++All five Cython recursive modules build successfully. The object-mode recursive modules are bit-exact against the bundled exports for:
++
++- Term_UK_A: 8/8 policies;
++- WOL_UK_S: 7/7;
++- ULSG_US_S: 4/4;
++- VA_US_S: **9/9**;
++- BasicTerm_S: first 1,000 policies in this generic graph/ABI gate.
++
++So the complete **169-Cell VA program, including its 53-Cell recursive SCC, now compiles and executes as one recursive Cython module with no Stage scheduler**.
++
++I view this as the cleaner split for modelx-cython:
+ 
+ ```text
+-modelx model
+-    |
+-    +--> model.export()
+-    |       +--> prepared lookup providers
+-    |       +--> recursive Python Cells
+-    |
+-    +--> modelx-cython
+-            +--> same lookup semantics lowered to native helpers
+-            +--> direct recursive C-level Cells
+-            +--> compact numeric execution context
+-            +--> C-level portfolio loop
++exported recursive model
++        |
++        +--> static Cell graph + signatures
++        |
++        +--> provider / lookup normalization
++        |
++        +--> typed direct-recursive Cell functions
++        |
++        +--> compact memo/context + C portfolio loop
++        |
++        +--> existing fallback for unsupported Python operations
+ ```
+ 
+-I've attached a standalone package containing the corrected raw results, generated sources, build/failure logs, lookup helper library, compiler snapshot, benchmark scripts and the generated exported-model packages used for the pure-Python runs. It excludes the modelx/modelx-cython/lifelib source trees and compiled binaries.
++The current dev74 work establishes the first part across all five products. It deliberately does not claim new typed-native timings for Term or VA yet; categorical/irregular table and other provider lowering remain the next layer.
++
++The attachment contains the compiler implementation, generated graph manifests, recursive Python and Cython sources, parity evidence, corrected benchmark evidence, lookup helpers, tests, build scripts and generated export packages needed to reproduce the graph/ABI results. Compiled binaries and generated C are excluded.
+--- a/compiler/modelx_graph/fast_recursive_graph.py
++++ b/compiler/modelx_graph/fast_recursive_graph.py
+@@ -0,0 +1,516 @@
++"""Static fast-recursive graph IR for exported modelx packages.
++
++This module deliberately separates *graph admissibility* from formula/data lowering.
++It reads exported ``_mx_classes.py`` source and builds a direct recursive Cell program
++without using realized modelx traces, recurrence schedules, stages, or storage fences.
++
++Unsupported formula syntax (pandas, Python containers, module calls, etc.) is recorded
++as a formula/provider concern and does not prevent graph construction.  The graph layer
++only rejects cases where Cell dependencies themselves cannot be resolved/bound
++statically (for example a first-class/dynamic Cell reference).
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass
++from pathlib import Path
++import ast
++from typing import Iterable, Mapping, Sequence
++
++
++class FastRecursiveGraphError(RuntimeError):
++    """Raised when the recursive Cell graph itself cannot be represented safely."""
++
++
++@dataclass(frozen=True)
++class FastRecursiveParameter:
++    name: str
++    default_source: str | None = None
++
++    @property
++    def required(self) -> bool:
++        return self.default_source is None
++
++
++@dataclass(frozen=True)
++class FastRecursiveBoundArg:
++    parameter: str
++    source: str
++    origin: str  # explicit | keyword | default
++    relation: str
++
++
++@dataclass(frozen=True)
++class FastRecursiveCallSite:
++    caller: str
++    callee: str
++    source: str
++    lineno: int
++    col_offset: int
++    bound_args: tuple[FastRecursiveBoundArg, ...]
++
++    @property
++    def arity(self) -> int:
++        return len(self.bound_args)
++
++
++@dataclass(frozen=True)
++class FastRecursiveExternalCall:
++    caller: str
++    source: str
++    root: str
++    kind: str  # provider | module | builtin | unknown
++    lineno: int
++
++
++@dataclass(frozen=True)
++class FastRecursiveCell:
++    name: str
++    formula_name: str
++    parameters: tuple[FastRecursiveParameter, ...]
++    source: str
++    lineno: int
++    dependency_calls: tuple[FastRecursiveCallSite, ...]
++    external_calls: tuple[FastRecursiveExternalCall, ...]
++    syntax_features: tuple[str, ...]
++
++    @property
++    def cache_key(self) -> tuple[str, ...]:
++        # Semantics-preserving default: memoization is keyed by every Cell argument.
++        # Physical cache layout is a later lowering decision.
++        return tuple(p.name for p in self.parameters)
++
++
++@dataclass(frozen=True)
++class FastRecursiveSCC:
++    cells: tuple[str, ...]
++    recursive: bool
++
++
++@dataclass(frozen=True)
++class FastRecursiveProgram:
++    source_path: str
++    class_name: str
++    space_name: str
++    target: str
++    cells: Mapping[str, FastRecursiveCell]
++    call_sites: tuple[FastRecursiveCallSite, ...]
++    external_calls: tuple[FastRecursiveExternalCall, ...]
++    sccs: tuple[FastRecursiveSCC, ...]
++    graph_blockers: tuple[str, ...] = ()
++    formula_notes: tuple[str, ...] = ()
++
++    @property
++    def graph_supported(self) -> bool:
++        return not self.graph_blockers
++
++    @property
++    def recursive_sccs(self) -> tuple[FastRecursiveSCC, ...]:
++        return tuple(s for s in self.sccs if s.recursive)
++
++    @property
++    def unique_dependency_pairs(self) -> tuple[tuple[str, str], ...]:
++        return tuple(sorted({(c.caller, c.callee) for c in self.call_sites}))
++
++    @property
++    def max_call_arity(self) -> int:
++        return max((c.arity for c in self.call_sites), default=0)
++
++    @property
++    def max_scc_size(self) -> int:
++        return max((len(s.cells) for s in self.recursive_sccs), default=0)
++
++    def manifest(self) -> dict:
++        return {
++            "source_path": self.source_path,
++            "class_name": self.class_name,
++            "space_name": self.space_name,
++            "target": self.target,
++            "graph_supported": self.graph_supported,
++            "graph_blockers": list(self.graph_blockers),
++            "cell_count": len(self.cells),
++            "call_site_count": len(self.call_sites),
++            "unique_dependency_count": len(self.unique_dependency_pairs),
++            "external_call_count": len(self.external_calls),
++            "max_call_arity": self.max_call_arity,
++            "scc_count": len(self.sccs),
++            "recursive_scc_count": len(self.recursive_sccs),
++            "max_recursive_scc_size": self.max_scc_size,
++            "recursive_sccs": [list(s.cells) for s in self.recursive_sccs],
++            "cells": {
++                name: {
++                    "parameters": [
++                        {"name": p.name, "default": p.default_source}
++                        for p in cell.parameters
++                    ],
++                    "cache_key": list(cell.cache_key),
++                    "dependencies": sorted({c.callee for c in cell.dependency_calls}),
++                    "dependency_call_sites": [
++                        {
++                            "callee": c.callee,
++                            "source": c.source,
++                            "bound_args": [
++                                {
++                                    "parameter": a.parameter,
++                                    "source": a.source,
++                                    "origin": a.origin,
++                                    "relation": a.relation,
++                                }
++                                for a in c.bound_args
++                            ],
++                        }
++                        for c in cell.dependency_calls
++                    ],
++                    "external_calls": [x.source for x in cell.external_calls],
++                    "syntax_features": list(cell.syntax_features),
++                }
++                for name, cell in sorted(self.cells.items())
++            },
++            "formula_notes": list(self.formula_notes),
++        }
++
++
++_BUILTINS = {
++    "abs", "all", "any", "bool", "enumerate", "float", "int", "len", "list",
++    "max", "min", "range", "round", "str", "sum", "tuple", "zip",
++}
++
++
++def _source(node: ast.AST) -> str:
++    try:
++        return ast.unparse(node)
++    except Exception:
++        return type(node).__name__
++
++
++def _parameters(fn: ast.FunctionDef) -> tuple[FastRecursiveParameter, ...]:
++    args = list(fn.args.args)
++    if not args or args[0].arg != "self":
++        raise FastRecursiveGraphError(f"{fn.name}: exported Cell formula does not start with self")
++    args = args[1:]
++    defaults = list(fn.args.defaults)
++    first_default = len(args) - len(defaults)
++    result: list[FastRecursiveParameter] = []
++    for i, a in enumerate(args):
++        default = None
++        if i >= first_default:
++            default = _source(defaults[i - first_default])
++        result.append(FastRecursiveParameter(a.arg, default))
++    if fn.args.posonlyargs or fn.args.kwonlyargs or fn.args.vararg or fn.args.kwarg:
++        raise FastRecursiveGraphError(
++            f"{fn.name}: varargs/kwonly/posonly exported Cell signatures are not yet supported"
++        )
++    return tuple(result)
++
++
++def _relation(expr: ast.AST, caller_params: set[str]) -> str:
++    if isinstance(expr, ast.Constant):
++        return "literal"
++    if isinstance(expr, ast.Name) and expr.id in caller_params:
++        return f"param:{expr.id}"
++    if (
++        isinstance(expr, ast.BinOp)
++        and isinstance(expr.left, ast.Name)
++        and expr.left.id in caller_params
++        and isinstance(expr.right, ast.Constant)
++        and isinstance(expr.right.value, (int, float))
++        and isinstance(expr.op, (ast.Add, ast.Sub))
++    ):
++        sign = 1 if isinstance(expr.op, ast.Add) else -1
++        return f"affine:{expr.left.id}:{sign * expr.right.value:+g}"
++    names = {n.id for n in ast.walk(expr) if isinstance(n, ast.Name)}
++    if names and names <= caller_params:
++        return "caller-expression"
++    return "dynamic-expression"
++
++
++def _bind_call(
++    caller: str,
++    caller_params: Sequence[FastRecursiveParameter],
++    callee: str,
++    callee_params: Sequence[FastRecursiveParameter],
++    call: ast.Call,
++) -> tuple[FastRecursiveBoundArg, ...]:
++    if any(k.arg is None for k in call.keywords):
++        raise FastRecursiveGraphError(f"{caller}->{callee}: **kwargs call is not statically bindable")
++    if len(call.args) > len(callee_params):
++        raise FastRecursiveGraphError(
++            f"{caller}->{callee}: {len(call.args)} positional args for {len(callee_params)} parameters"
++        )
++    caller_names = {p.name for p in caller_params}
++    values: dict[str, tuple[str, str, str]] = {}
++    for p, arg in zip(callee_params, call.args):
++        values[p.name] = (_source(arg), "explicit", _relation(arg, caller_names))
++    known = {p.name: p for p in callee_params}
++    for kw in call.keywords:
++        assert kw.arg is not None
++        if kw.arg not in known:
++            raise FastRecursiveGraphError(f"{caller}->{callee}: unknown keyword {kw.arg!r}")
++        if kw.arg in values:
++            raise FastRecursiveGraphError(f"{caller}->{callee}: duplicate argument {kw.arg!r}")
++        values[kw.arg] = (_source(kw.value), "keyword", _relation(kw.value, caller_names))
++    result: list[FastRecursiveBoundArg] = []
++    for p in callee_params:
++        if p.name in values:
++            src, origin, rel = values[p.name]
++        elif p.default_source is not None:
++            src, origin, rel = p.default_source, "default", "default"
++        else:
++            raise FastRecursiveGraphError(f"{caller}->{callee}: missing required argument {p.name!r}")
++        result.append(FastRecursiveBoundArg(p.name, src, origin, rel))
++    return tuple(result)
++
++
++def _nested_root(attr: ast.Attribute) -> str | None:
++    cur: ast.AST = attr
++    chain: list[str] = []
++    while isinstance(cur, ast.Attribute):
++        chain.append(cur.attr)
++        cur = cur.value
++    if isinstance(cur, ast.Name) and cur.id == "self" and chain:
++        return chain[-1]
++    return None
++
++
++def _syntax_features(fn: ast.FunctionDef) -> tuple[str, ...]:
++    kinds: set[str] = set()
++    for n in ast.walk(fn):
++        if isinstance(n, ast.For): kinds.add("for")
++        elif isinstance(n, ast.While): kinds.add("while")
++        elif isinstance(n, ast.Raise): kinds.add("raise")
++        elif isinstance(n, ast.ListComp): kinds.add("listcomp")
++        elif isinstance(n, ast.GeneratorExp): kinds.add("generator")
++        elif isinstance(n, ast.DictComp): kinds.add("dictcomp")
++        elif isinstance(n, ast.SetComp): kinds.add("setcomp")
++        elif isinstance(n, (ast.List, ast.Dict, ast.Set)): kinds.add("container-literal")
++        elif isinstance(n, ast.Subscript): kinds.add("subscript")
++        elif isinstance(n, ast.Slice): kinds.add("slice")
++        elif isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute):
++            root = _nested_root(n.func)
++            if root in {"data", "Data"}: kinds.add("provider-call")
++            elif root in {"pd", "np", "math"}: kinds.add("module-call")
++    return tuple(sorted(kinds))
++
++
++def _tarjan(
++    cells: Iterable[str], dependency_pairs: Iterable[tuple[str, str]]
++) -> tuple[FastRecursiveSCC, ...]:
++    nodes = tuple(sorted(cells))
++    adj = {n: set() for n in nodes}
++    for a, b in dependency_pairs:
++        if a in adj and b in adj:
++            adj[a].add(b)
++    index = 0
++    indices: dict[str, int] = {}
++    low: dict[str, int] = {}
++    stack: list[str] = []
++    on_stack: set[str] = set()
++    comps: list[FastRecursiveSCC] = []
++
++    def strong(v: str) -> None:
++        nonlocal index
++        indices[v] = low[v] = index
++        index += 1
++        stack.append(v)
++        on_stack.add(v)
++        for w in sorted(adj[v]):
++            if w not in indices:
++                strong(w)
++                low[v] = min(low[v], low[w])
++            elif w in on_stack:
++                low[v] = min(low[v], indices[w])
++        if low[v] == indices[v]:
++            cc: list[str] = []
++            while True:
++                w = stack.pop()
++                on_stack.remove(w)
++                cc.append(w)
++                if w == v:
++                    break
++            ordered = tuple(sorted(cc))
++            recursive = len(ordered) > 1 or (len(ordered) == 1 and ordered[0] in adj[ordered[0]])
++            comps.append(FastRecursiveSCC(ordered, recursive))
++
++    for n in nodes:
++        if n not in indices:
++            strong(n)
++    return tuple(sorted(comps, key=lambda s: (min(s.cells), len(s.cells))))
++
++
++def build_fast_recursive_program(
++    classes_path: str | Path,
++    *,
++    target: str,
++    class_name: str | None = None,
++    space_name: str = "Projection",
++) -> FastRecursiveProgram:
++    """Build a static recursive Cell program from a modelx exported classes module.
++
++    The result contains the target dependency closure only.  It deliberately does not
++    inspect realized modelx nodes/traces and does not derive any sequential execution
++    stages.  Every Cell call is bound against the callee's exported Python signature;
++    defaults and multi-argument calls are retained as part of the recursive ABI.
++    """
++    path = Path(classes_path)
++    module = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
++    classes = [n for n in module.body if isinstance(n, ast.ClassDef)]
++    if class_name is None:
++        suffix = space_name
++        matches = [c for c in classes if c.name == f"_c_{space_name}" or c.name.endswith(suffix)]
++        if len(matches) != 1:
++            raise FastRecursiveGraphError(
++                f"expected one exported class for space {space_name!r}, found {[c.name for c in matches]}"
++            )
++        cls = matches[0]
++    else:
++        matches = [c for c in classes if c.name == class_name]
++        if len(matches) != 1:
++            raise FastRecursiveGraphError(f"exported class {class_name!r} not found uniquely")
++        cls = matches[0]
++
++    formulas: dict[str, ast.FunctionDef] = {
++        f.name[3:]: f
++        for f in cls.body
++        if isinstance(f, ast.FunctionDef) and f.name.startswith("_f_")
++    }
++    if target not in formulas:
++        raise FastRecursiveGraphError(f"target Cell {target!r} not found in {cls.name}")
++    params = {name: _parameters(fn) for name, fn in formulas.items()}
++
++    raw_calls: dict[str, list[ast.Call]] = {name: [] for name in formulas}
++    first_class_refs: list[str] = []
++    external_by_cell: dict[str, list[FastRecursiveExternalCall]] = {name: [] for name in formulas}
++
++    for name, fn in formulas.items():
++        parents: dict[int, ast.AST] = {
++            id(child): parent
++            for parent in ast.walk(fn)
++            for child in ast.iter_child_nodes(parent)
++        }
++        for node in ast.walk(fn):
++            if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "self" and node.attr in formulas:
++                parent = parents.get(id(node))
++                if not (isinstance(parent, ast.Call) and parent.func is node):
++                    first_class_refs.append(f"{name}: first-class Cell reference {_source(node)}")
++            if not isinstance(node, ast.Call):
++                continue
++            fun = node.func
++            if isinstance(fun, ast.Attribute) and isinstance(fun.value, ast.Name) and fun.value.id == "self":
++                if fun.attr in formulas:
++                    raw_calls[name].append(node)
++                else:
++                    external_by_cell[name].append(
++                        FastRecursiveExternalCall(
++                            caller=name,
++                            source=_source(node),
++                            root=fun.attr,
++                            kind="unknown",
++                            lineno=getattr(node, "lineno", 0),
++                        )
++                    )
++            elif isinstance(fun, ast.Attribute):
++                root = _nested_root(fun)
++                if root is not None:
++                    kind = "provider" if root in {"data", "Data"} else ("module" if root in {"np", "pd", "math"} else "unknown")
++                    external_by_cell[name].append(
++                        FastRecursiveExternalCall(
++                            caller=name,
++                            source=_source(node),
++                            root=root,
++                            kind=kind,
++                            lineno=getattr(node, "lineno", 0),
++                        )
++                    )
++            elif isinstance(fun, ast.Name) and fun.id not in _BUILTINS and fun.id not in {"ValueError", "RuntimeError", "TypeError"}:
++                external_by_cell[name].append(
++                    FastRecursiveExternalCall(
++                        caller=name,
++                        source=_source(node),
++                        root=fun.id,
++                        kind="unknown",
++                        lineno=getattr(node, "lineno", 0),
++                    )
++                )
++
++    # Static target closure over direct Cell calls.  This is independent of formula
++    # syntax/data support and therefore cannot silently shrink because a branch was not
++    # exercised by a sampled policy.
++    closure: set[str] = set()
++    pending = [target]
++    while pending:
++        name = pending.pop()
++        if name in closure:
++            continue
++        closure.add(name)
++        for call in raw_calls[name]:
++            assert isinstance(call.func, ast.Attribute)
++            pending.append(call.func.attr)
++
++    blockers = [x for x in first_class_refs if x.split(":", 1)[0] in closure]
++    call_sites: list[FastRecursiveCallSite] = []
++    cell_map: dict[str, FastRecursiveCell] = {}
++    formula_notes: set[str] = set()
++
++    for name in sorted(closure):
++        fn = formulas[name]
++        calls: list[FastRecursiveCallSite] = []
++        for call in raw_calls[name]:
++            assert isinstance(call.func, ast.Attribute)
++            callee = call.func.attr
++            try:
++                bound = _bind_call(name, params[name], callee, params[callee], call)
++            except FastRecursiveGraphError as exc:
++                blockers.append(str(exc))
++                bound = ()
++            site = FastRecursiveCallSite(
++                caller=name,
++                callee=callee,
++                source=_source(call),
++                lineno=getattr(call, "lineno", 0),
++                col_offset=getattr(call, "col_offset", 0),
++                bound_args=bound,
++            )
++            calls.append(site)
++            call_sites.append(site)
++        ext = tuple(external_by_cell[name])
++        feats = _syntax_features(fn)
++        for f in feats:
++            formula_notes.add(f)
++        cell_map[name] = FastRecursiveCell(
++            name=name,
++            formula_name=fn.name,
++            parameters=params[name],
++            source=ast.get_source_segment(path.read_text(encoding="utf-8"), fn) or _source(fn),
++            lineno=getattr(fn, "lineno", 0),
++            dependency_calls=tuple(calls),
++            external_calls=ext,
++            syntax_features=feats,
++        )
++
++    pairs = {(c.caller, c.callee) for c in call_sites}
++    sccs = _tarjan(cell_map, pairs)
++    all_external = tuple(x for n in sorted(cell_map) for x in cell_map[n].external_calls)
++    return FastRecursiveProgram(
++        source_path=str(path),
++        class_name=cls.name,
++        space_name=space_name,
++        target=target,
++        cells=cell_map,
++        call_sites=tuple(call_sites),
++        external_calls=all_external,
++        sccs=sccs,
++        graph_blockers=tuple(sorted(set(blockers))),
++        formula_notes=tuple(sorted(formula_notes)),
++    )
++
++
++__all__ = [
++    "FastRecursiveGraphError",
++    "FastRecursiveParameter",
++    "FastRecursiveBoundArg",
++    "FastRecursiveCallSite",
++    "FastRecursiveExternalCall",
++    "FastRecursiveCell",
++    "FastRecursiveSCC",
++    "FastRecursiveProgram",
++    "build_fast_recursive_program",
++]
+--- a/compiler/modelx_graph/fast_recursive_python.py
++++ b/compiler/modelx_graph/fast_recursive_python.py
+@@ -0,0 +1,178 @@
++"""Pure-Python reference emitter for :mod:`fast_recursive_graph`.
++
++The emitted module is intentionally simple: one direct recursive function per exported
++Cell plus one memo dictionary per Cell, keyed by the complete Cell argument tuple.  It
++is an executable proof of the fast-recursive graph ABI before Cython/type/provider
++lowering.  Non-Cell source syntax is preserved rather than interpreted by the graph
++layer.
++"""
++from __future__ import annotations
++
++from pathlib import Path
++import ast
++
++from .fast_recursive_graph import FastRecursiveGraphError, FastRecursiveProgram
++
++
++class _FormulaTransformer(ast.NodeTransformer):
++    def __init__(self, cell_names: set[str]):
++        self.cell_names = cell_names
++
++    def visit_Call(self, node: ast.Call):  # noqa: N802
++        # Rewrite direct Cell calls before replacing generic self references.
++        if (
++            isinstance(node.func, ast.Attribute)
++            and isinstance(node.func.value, ast.Name)
++            and node.func.value.id == "self"
++            and node.func.attr in self.cell_names
++        ):
++            return ast.copy_location(
++                ast.Call(
++                    func=ast.Name(id=f"fr_{node.func.attr}", ctx=ast.Load()),
++                    args=[ast.Name(id="rt", ctx=ast.Load())] + [self.visit(a) for a in node.args],
++                    keywords=[ast.keyword(arg=k.arg, value=self.visit(k.value)) for k in node.keywords],
++                ),
++                node,
++            )
++        return self.generic_visit(node)
++
++    def visit_Name(self, node: ast.Name):  # noqa: N802
++        if node.id == "self" and isinstance(node.ctx, ast.Load):
++            return ast.copy_location(
++                ast.Attribute(
++                    value=ast.Name(id="rt", ctx=ast.Load()),
++                    attr="ctx",
++                    ctx=ast.Load(),
++                ),
++                node,
++            )
++        return node
++
++
++def _arg_node(name: str) -> ast.arg:
++    return ast.arg(arg=name, annotation=None)
++
++
++def _runtime_class(cache_count: int) -> ast.ClassDef:
++    src = f'''\nclass FastRecursiveRuntime:\n    def __init__(self, ctx=None):\n        self.ctx = ctx\n        self.cache = [dict() for _ in range({cache_count})]\n\n    def bind(self, ctx):\n        self.ctx = ctx\n        for c in self.cache:\n            c.clear()\n        return self\n'''
++    return ast.parse(src).body[0]  # type: ignore[return-value]
++
++
++def _formula_nodes(program: FastRecursiveProgram) -> dict[str, ast.FunctionDef]:
++    module = ast.parse(Path(program.source_path).read_text(encoding="utf-8"), filename=program.source_path)
++    cls = next(
++        (
++            n for n in module.body
++            if isinstance(n, ast.ClassDef) and n.name == program.class_name
++        ),
++        None,
++    )
++    if cls is None:
++        raise FastRecursiveGraphError(f"exported class {program.class_name!r} disappeared from source")
++    return {
++        n.name[3:]: n
++        for n in cls.body
++        if isinstance(n, ast.FunctionDef) and n.name.startswith("_f_") and n.name[3:] in program.cells
++    }
++
++
++def emit_fast_recursive_python(program: FastRecursiveProgram) -> str:
++    """Emit an executable recursive Python module for a static Cell program."""
++    if not program.graph_supported:
++        raise FastRecursiveGraphError("cannot emit graph with blockers: " + "; ".join(program.graph_blockers))
++    formulas = _formula_nodes(program)
++    if set(formulas) != set(program.cells):
++        missing = sorted(set(program.cells) - set(formulas))
++        raise FastRecursiveGraphError(f"formula nodes missing for {missing}")
++    names = set(program.cells)
++    tx = _FormulaTransformer(names)
++    order = sorted(program.cells)
++    cache_index = {name: i for i, name in enumerate(order)}
++    body: list[ast.stmt] = [
++        ast.Expr(value=ast.Constant(value="Generated static fast-recursive reference runtime.")),
++        _runtime_class(len(order)),
++    ]
++
++    for name in order:
++        original = formulas[name]
++        # Calculate function: preserve the original formula body, defaults and control flow,
++        # replacing only direct Cell dispatch and self -> runtime context.
++        args = [_arg_node("rt")] + [_arg_node(p.name) for p in program.cells[name].parameters]
++        defaults = [ast.parse(p.default_source, mode="eval").body for p in program.cells[name].parameters if p.default_source is not None]
++        calc = ast.FunctionDef(
++            name=f"_calc_{name}",
++            args=ast.arguments(
++                posonlyargs=[], args=args, vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=defaults
++            ),
++            body=[tx.visit(ast.fix_missing_locations(ast.parse(ast.unparse(stmt)).body[0])) for stmt in original.body],
++            decorator_list=[], returns=None, type_comment=None,
++        )
++        body.append(calc)
++
++        params = [p.name for p in program.cells[name].parameters]
++        if not params:
++            key_expr: ast.expr = ast.Constant(value=None)
++        elif len(params) == 1:
++            key_expr = ast.Name(id=params[0], ctx=ast.Load())
++        else:
++            key_expr = ast.Tuple(elts=[ast.Name(id=p, ctx=ast.Load()) for p in params], ctx=ast.Load())
++        call_calc = ast.Call(
++            func=ast.Name(id=f"_calc_{name}", ctx=ast.Load()),
++            args=[ast.Name(id="rt", ctx=ast.Load())] + [ast.Name(id=p, ctx=ast.Load()) for p in params],
++            keywords=[],
++        )
++        wrapper_src = f'''\ndef fr_{name}({', '.join(['rt'] + [p.name + (('=' + p.default_source) if p.default_source is not None else '') for p in program.cells[name].parameters])}):\n    c = rt.cache[{cache_index[name]}]\n    key = None\n    if key in c:\n        return c[key]\n    val = None\n    c[key] = val\n    return val\n'''
++        wrapper = ast.parse(wrapper_src).body[0]
++        assert isinstance(wrapper, ast.FunctionDef)
++        # Replace the placeholder key / calc while keeping the simple, easy-to-inspect body.
++        assign_key = wrapper.body[1]
++        assert isinstance(assign_key, ast.Assign)
++        assign_key.value = key_expr
++        assign_val = wrapper.body[3]
++        assert isinstance(assign_val, ast.Assign)
++        assign_val.value = call_calc
++        body.append(wrapper)
++
++    target_cell = program.cells[program.target]
++    if target_cell.parameters:
++        # Direct functions are still emitted; only the convenience evaluate() helper needs
++        # a zero-argument target, which is true for all current benchmark roots.
++        helper_body: list[ast.stmt] = [
++            ast.Raise(
++                exc=ast.Call(func=ast.Name(id="TypeError", ctx=ast.Load()), args=[ast.Constant("target requires arguments")], keywords=[]),
++                cause=None,
++            )
++        ]
++    else:
++        helper_body = [
++            ast.Expr(
++                value=ast.Call(
++                    func=ast.Attribute(value=ast.Name(id="rt", ctx=ast.Load()), attr="bind", ctx=ast.Load()),
++                    args=[ast.Name(id="ctx", ctx=ast.Load())], keywords=[],
++                )
++            ),
++            ast.Return(
++                value=ast.Call(func=ast.Name(id=f"fr_{program.target}", ctx=ast.Load()), args=[ast.Name(id="rt", ctx=ast.Load())], keywords=[])
++            ),
++        ]
++    body.append(
++        ast.FunctionDef(
++            name="evaluate",
++            args=ast.arguments(posonlyargs=[], args=[_arg_node("rt"), _arg_node("ctx")], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
++            body=helper_body,
++            decorator_list=[], returns=None, type_comment=None,
++        )
++    )
++    module = ast.Module(body=body, type_ignores=[])
++    ast.fix_missing_locations(module)
++    return ast.unparse(module) + "\n"
++
++
++def write_fast_recursive_python(program: FastRecursiveProgram, path: str | Path) -> Path:
++    out = Path(path)
++    out.parent.mkdir(parents=True, exist_ok=True)
++    out.write_text(emit_fast_recursive_python(program), encoding="utf-8")
++    return out
++
++
++__all__ = ["emit_fast_recursive_python", "write_fast_recursive_python"]
+--- a/compiler/modelx_graph/fast_recursive_cython.py
++++ b/compiler/modelx_graph/fast_recursive_cython.py
+@@ -0,0 +1,39 @@
++"""Cython object-mode emitter for the static fast-recursive program.
++
++This is a graph/ABI proof layer, not the final native numeric backend.  It compiles every
++Cell in the static recursive closure to a C-level function while preserving unsupported
++provider/Python operations as ordinary Python object operations.  Native provider/type
++lowering can therefore be developed independently of recurrence scheduling.
++"""
++from __future__ import annotations
++
++from pathlib import Path
++
++from .fast_recursive_graph import FastRecursiveProgram
++from .fast_recursive_python import emit_fast_recursive_python
++
++
++def emit_fast_recursive_cython_object(program: FastRecursiveProgram) -> str:
++    src = emit_fast_recursive_python(program)
++    out: list[str] = [
++        "# cython: language_level=3, boundscheck=False, wraparound=False, initializedcheck=False",
++        "",
++    ]
++    for line in src.splitlines():
++        # _calc_* and fr_* are internal C-level functions.  Their arguments intentionally
++        # remain Python objects at this stage; this proves graph topology independently
++        # of numeric/provider lowering.
++        if line.startswith("def _calc_") or line.startswith("def fr_"):
++            line = "cdef object " + line[len("def "):]
++        out.append(line)
++    return "\n".join(out) + "\n"
++
++
++def write_fast_recursive_cython_object(program: FastRecursiveProgram, path: str | Path) -> Path:
++    out = Path(path)
++    out.parent.mkdir(parents=True, exist_ok=True)
++    out.write_text(emit_fast_recursive_cython_object(program), encoding="utf-8")
++    return out
++
++
++__all__ = ["emit_fast_recursive_cython_object", "write_fast_recursive_cython_object"]
+--- a/benchmark_scripts/audit_fast_recursive_graph.py
++++ b/benchmark_scripts/audit_fast_recursive_graph.py
+@@ -0,0 +1,71 @@
++from __future__ import annotations
++import argparse, json, sys, time
++from pathlib import Path
++
++HERE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(HERE / 'compiler'))
++from modelx_graph.fast_recursive_graph import build_fast_recursive_program
++
++TARGETS = {
++    'BasicTerm_S': 'pv_net_cf',
++    'Term_UK_A': 'bench_net_cf',
++    'WOL_UK_S': 'bench_net_cf',
++    'ULSG_US_S': 'bench_net_cf',
++    'VA_US_S': 'bench_net_cf',
++}
++EXPECTED = {
++    'BasicTerm_S': {'cells': 35, 'calls': 68, 'unique': 63, 'max_arity': 1, 'recursive_sccs': 1, 'max_scc': 4},
++    'Term_UK_A': {'cells': 57, 'calls': 127, 'unique': 114, 'max_arity': 2, 'recursive_sccs': 6, 'max_scc': 7},
++    'WOL_UK_S': {'cells': 52, 'calls': 126, 'unique': 110, 'max_arity': 2, 'recursive_sccs': 6, 'max_scc': 1},
++    'ULSG_US_S': {'cells': 102, 'calls': 223, 'unique': 209, 'max_arity': 2, 'recursive_sccs': 8, 'max_scc': 6},
++    'VA_US_S': {'cells': 169, 'calls': 492, 'unique': 454, 'max_arity': 3, 'recursive_sccs': 7, 'max_scc': 53},
++}
++
++def main() -> int:
++    ap = argparse.ArgumentParser()
++    ap.add_argument('--out', type=Path, default=HERE / 'results' / 'FAST_RECURSIVE_GRAPH_COVERAGE.json')
++    ap.add_argument('--no-assert', action='store_true')
++    ns = ap.parse_args()
++    results = []
++    for model, target in TARGETS.items():
++        source = HERE / 'generated_exports' / model / model / '_mx_classes.py'
++        t0=time.perf_counter(); p = build_fast_recursive_program(source, target=target); build_s=time.perf_counter()-t0
++        m = p.manifest()
++        row = {
++            'model': model,
++            'target': target,
++            'graph_supported': p.graph_supported,
++            'build_s': build_s,
++            'graph_blockers': list(p.graph_blockers),
++            'cells': len(p.cells),
++            'call_sites': len(p.call_sites),
++            'unique_dependencies': len(p.unique_dependency_pairs),
++            'max_call_arity': p.max_call_arity,
++            'sccs': len(p.sccs),
++            'recursive_sccs': len(p.recursive_sccs),
++            'max_recursive_scc_size': p.max_scc_size,
++            'external_calls': len(p.external_calls),
++            'formula_notes': list(p.formula_notes),
++            'recursive_components': [list(s.cells) for s in sorted(p.recursive_sccs, key=lambda s: (-len(s.cells), s.cells))],
++            'manifest_file': f'fast_recursive_graph/{model}.json',
++        }
++        if not ns.no_assert:
++            e = EXPECTED[model]
++            assert p.graph_supported, (model, p.graph_blockers)
++            assert row['cells'] == e['cells'], (model, 'cells', row['cells'], e['cells'])
++            assert row['call_sites'] == e['calls'], (model, 'calls', row['call_sites'], e['calls'])
++            assert row['unique_dependencies'] == e['unique'], (model, 'unique', row['unique_dependencies'], e['unique'])
++            assert row['max_call_arity'] == e['max_arity'], (model, 'arity', row['max_call_arity'], e['max_arity'])
++            assert row['recursive_sccs'] == e['recursive_sccs'], (model, 'scc', row['recursive_sccs'], e['recursive_sccs'])
++            assert row['max_recursive_scc_size'] == e['max_scc'], (model, 'max_scc', row['max_recursive_scc_size'], e['max_scc'])
++        manifest_path = HERE / 'fast_recursive_graph' / f'{model}.json'
++        manifest_path.parent.mkdir(parents=True, exist_ok=True)
++        manifest_path.write_text(json.dumps(m, indent=2), encoding='utf-8')
++        results.append(row)
++        print(json.dumps(row), flush=True)
++    ns.out.parent.mkdir(parents=True, exist_ok=True)
++    ns.out.write_text(json.dumps({'contract': 'static exported-source recursive graph; no trace/stages', 'models': results}, indent=2), encoding='utf-8')
++    return 0
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/benchmark_scripts/validate_fast_recursive_python.py
++++ b/benchmark_scripts/validate_fast_recursive_python.py
+@@ -0,0 +1,86 @@
++from __future__ import annotations
++import argparse, importlib, importlib.util, json, math, sys, time
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++TARGET = {
++    "BasicTerm_S":"pv_net_cf",
++    "Term_UK_A":"bench_net_cf",
++    "WOL_UK_S":"bench_net_cf",
++    "ULSG_US_S":"bench_net_cf",
++    "VA_US_S":"bench_net_cf",
++}
++
++def load_file(name: str, path: Path):
++    spec = importlib.util.spec_from_file_location(name, path)
++    mod = importlib.util.module_from_spec(spec)
++    assert spec.loader
++    spec.loader.exec_module(mod)
++    return mod
++
++def main():
++    sys.setrecursionlimit(20000)
++    ap = argparse.ArgumentParser()
++    ap.add_argument("model")
++    ap.add_argument("--limit", type=int, default=None)
++    ns = ap.parse_args()
++    model = ns.model
++    target = TARGET[model]
++    pkgroot = ROOT / "generated_exports" / model
++    sys.path.insert(0, str(pkgroot))
++    mm = importlib.import_module(model + "._mx_model")
++    Model = getattr(mm, "_c_" + model)
++    m = Model()
++    fr = load_file("fr_" + model, ROOT / "fast_recursive_python" / (model + ".py"))
++    rt = fr.FastRecursiveRuntime()
++    if model == "BasicTerm_S":
++        keys = list(m.Projection.model_point_table.index)
++    else:
++        keys = list(m.Data.model_point_table().index)
++    if ns.limit is not None:
++        keys = keys[:ns.limit]
++
++    t = time.perf_counter()
++    exp = []
++    for k in keys:
++        ctx = m.Projection[k]
++        exp.append(float(getattr(ctx, target)()))
++        try:
++            del m.Projection[k]
++        except Exception:
++            pass
++    export_s = time.perf_counter() - t
++
++    t = time.perf_counter()
++    got = []
++    for k in keys:
++        ctx = m.Projection[k]
++        got.append(float(fr.evaluate(rt, ctx)))
++        try:
++            del m.Projection[k]
++        except Exception:
++            pass
++    fr_s = time.perf_counter() - t
++
++    diffs = [abs(a-b) for a,b in zip(exp, got)]
++    max_abs = max(diffs, default=0.0)
++    ok = all(math.isclose(a,b,rel_tol=1e-12,abs_tol=1e-12) for a,b in zip(exp,got))
++    row = {
++        "model": model,
++        "target": target,
++        "policies": len(keys),
++        "export_s": export_s,
++        "fast_recursive_reference_s": fr_s,
++        "max_abs_error": max_abs,
++        "allclose_1e12": ok,
++        "checksum_expected": sum(exp),
++        "checksum_recursive": sum(got),
++        "values_expected": exp if len(keys) <= 20 else None,
++        "values_recursive": got if len(keys) <= 20 else None,
++    }
++    print(json.dumps(row))
++    if not ok:
++        raise SystemExit(2)
++
++if __name__ == "__main__":
++    main()
+--- a/benchmark_scripts/validate_fast_recursive_cython_object.py
++++ b/benchmark_scripts/validate_fast_recursive_cython_object.py
+@@ -0,0 +1,25 @@
++from __future__ import annotations
++import argparse, importlib, json, math, sys, time
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1]
++TARGET={'BasicTerm_S':'pv_net_cf','Term_UK_A':'bench_net_cf','WOL_UK_S':'bench_net_cf','ULSG_US_S':'bench_net_cf','VA_US_S':'bench_net_cf'}
++def main():
++    sys.setrecursionlimit(20000)
++    ap=argparse.ArgumentParser();ap.add_argument('model');ap.add_argument('--limit',type=int,default=None);ns=ap.parse_args();model=ns.model;target=TARGET[model]
++    sys.path.insert(0,str(ROOT/'generated_exports'/model));sys.path.insert(0,str(ROOT/'fast_recursive_cython_object'))
++    mm=importlib.import_module(model+'._mx_model');m=getattr(mm,'_c_'+model)();fr=importlib.import_module('frcy_'+model);rt=fr.FastRecursiveRuntime()
++    keys=list(m.Projection.model_point_table.index) if model=='BasicTerm_S' else list(m.Data.model_point_table().index)
++    if ns.limit is not None:keys=keys[:ns.limit]
++    exp=[]
++    for k in keys:
++        ctx=m.Projection[k];exp.append(float(getattr(ctx,target)()))
++        try:del m.Projection[k]
++        except Exception:pass
++    t=time.perf_counter();got=[]
++    for k in keys:
++        ctx=m.Projection[k];got.append(float(fr.evaluate(rt,ctx)))
++        try:del m.Projection[k]
++        except Exception:pass
++    elapsed=time.perf_counter()-t
++    ok=all(math.isclose(a,b,rel_tol=1e-12,abs_tol=1e-12) for a,b in zip(exp,got));row={'model':model,'policies':len(keys),'cython_object_s':elapsed,'max_abs_error':max((abs(a-b) for a,b in zip(exp,got)),default=0.0),'allclose_1e12':ok,'checksum':sum(got)};print(json.dumps(row));raise SystemExit(0 if ok else 2)
++if __name__=='__main__':main()
+--- a/benchmark_scripts/generate_fast_recursive_artifacts.py
++++ b/benchmark_scripts/generate_fast_recursive_artifacts.py
+@@ -0,0 +1,49 @@
++from __future__ import annotations
++import argparse, json, sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / 'compiler'))
++from modelx_graph import (
++    build_fast_recursive_program,
++    write_fast_recursive_python,
++    write_fast_recursive_cython_object,
++)
++
++TARGETS = {
++    'BasicTerm_S': 'pv_net_cf',
++    'Term_UK_A': 'bench_net_cf',
++    'WOL_UK_S': 'bench_net_cf',
++    'ULSG_US_S': 'bench_net_cf',
++    'VA_US_S': 'bench_net_cf',
++}
++
++
++def main() -> int:
++    ap = argparse.ArgumentParser()
++    ap.add_argument('models', nargs='*', choices=tuple(TARGETS), help='default: all models')
++    ns = ap.parse_args()
++    models = ns.models or list(TARGETS)
++    for model in models:
++        source = ROOT / 'generated_exports' / model / model / '_mx_classes.py'
++        p = build_fast_recursive_program(source, target=TARGETS[model])
++        if not p.graph_supported:
++            raise RuntimeError(f'{model}: graph blockers: {p.graph_blockers}')
++        graph = ROOT / 'fast_recursive_graph' / f'{model}.json'
++        graph.parent.mkdir(parents=True, exist_ok=True)
++        graph.write_text(json.dumps(p.manifest(), indent=2), encoding='utf-8')
++        py = write_fast_recursive_python(p, ROOT / 'fast_recursive_python' / f'{model}.py')
++        pyx = write_fast_recursive_cython_object(p, ROOT / 'fast_recursive_cython_object' / f'{model}.pyx')
++        print(json.dumps({
++            'model': model,
++            'cells': len(p.cells),
++            'call_sites': len(p.call_sites),
++            'recursive_sccs': len(p.recursive_sccs),
++            'max_recursive_scc_size': p.max_scc_size,
++            'python_source': str(py.relative_to(ROOT)),
++            'cython_object_source': str(pyx.relative_to(ROOT)),
++        }))
++    return 0
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/benchmark_scripts/build_fast_recursive_cython_object.py
++++ b/benchmark_scripts/build_fast_recursive_cython_object.py
+@@ -0,0 +1,18 @@
++from __future__ import annotations
++import argparse, json, subprocess, sys, time
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++MODELS = ['BasicTerm_S','Term_UK_A','WOL_UK_S','ULSG_US_S','VA_US_S']
++
++def main() -> int:
++    ap=argparse.ArgumentParser();ap.add_argument('models',nargs='*',choices=MODELS);ns=ap.parse_args();models=ns.models or MODELS
++    rows=[]; ok=True
++    for model in models:
++        t=time.perf_counter()
++        cp=subprocess.run([sys.executable,'setup.py','build_ext','--inplace',f'MODEL={model}'],cwd=ROOT/'fast_recursive_cython_object',text=True,capture_output=True)
++        row={'model':model,'returncode':cp.returncode,'build_s':time.perf_counter()-t,'stdout_tail':cp.stdout[-4000:],'stderr_tail':cp.stderr[-4000:]}
++        rows.append(row);print(json.dumps({k:v for k,v in row.items() if not k.endswith('_tail')}),flush=True);ok &= cp.returncode==0
++    out=ROOT/'results/FAST_RECURSIVE_CYTHON_OBJECT_BUILD_FRESH.json';out.write_text(json.dumps({'models':rows},indent=2),encoding='utf-8')
++    return 0 if ok else 2
++if __name__=='__main__':raise SystemExit(main())
+--- a/tests/test_fast_recursive_graph.py
++++ b/tests/test_fast_recursive_graph.py
+@@ -0,0 +1,102 @@
++from __future__ import annotations
++import json, sys, tempfile, unittest
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / 'compiler'))
++from modelx_graph.fast_recursive_graph import build_fast_recursive_program
++from modelx_graph.fast_recursive_python import emit_fast_recursive_python
++
++EXPECTED = {
++    'BasicTerm_S': ('pv_net_cf', 35, 68, 63, 1, 4),
++    'Term_UK_A': ('bench_net_cf', 57, 127, 114, 6, 7),
++    'WOL_UK_S': ('bench_net_cf', 52, 126, 110, 6, 1),
++    'ULSG_US_S': ('bench_net_cf', 102, 223, 209, 8, 6),
++    'VA_US_S': ('bench_net_cf', 169, 492, 454, 7, 53),
++}
++
++class FastRecursiveGraphTests(unittest.TestCase):
++    def test_all_benchmark_products_have_static_recursive_graph(self):
++        for model, (target, cells, calls, unique, recursive_sccs, max_scc) in EXPECTED.items():
++            with self.subTest(model=model):
++                src = ROOT / 'generated_exports' / model / model / '_mx_classes.py'
++                p = build_fast_recursive_program(src, target=target)
++                self.assertTrue(p.graph_supported, p.graph_blockers)
++                self.assertEqual(len(p.cells), cells)
++                self.assertEqual(len(p.call_sites), calls)
++                self.assertEqual(len(p.unique_dependency_pairs), unique)
++                self.assertEqual(len(p.recursive_sccs), recursive_sccs)
++                self.assertEqual(p.max_scc_size, max_scc)
++
++    def test_va_large_recursive_component_is_admitted_without_stages(self):
++        src = ROOT / 'generated_exports' / 'VA_US_S' / 'VA_US_S' / '_mx_classes.py'
++        p = build_fast_recursive_program(src, target='bench_net_cf')
++        largest = max(p.recursive_sccs, key=lambda s: len(s.cells))
++        self.assertEqual(len(largest.cells), 53)
++        self.assertIn('av_pp', largest.cells)
++        self.assertIn('gwb_pp', largest.cells)
++        self.assertIn('wd_pp', largest.cells)
++        self.assertIn('phi_glwb_vix', p.cells)  # static source closure, not trace-dependent
++        # Fast-recursive IR carries graph/call ABI only; stage scheduling is deliberately absent.
++        self.assertFalse(hasattr(p, 'stages'))
++        self.assertFalse(hasattr(p, 'execution_blocks'))
++
++    def test_multi_argument_calls_and_defaults_are_bound(self):
++        src = ROOT / 'generated_exports' / 'VA_US_S' / 'VA_US_S' / '_mx_classes.py'
++        p = build_fast_recursive_program(src, target='bench_net_cf')
++        self.assertEqual(p.max_call_arity, 3)
++        # At least one call must carry all three arguments in the direct recursive ABI.
++        three = [c for c in p.call_sites if c.arity == 3]
++        self.assertTrue(three)
++        self.assertTrue(all(len(c.bound_args) == 3 for c in three))
++
++        term_src = ROOT / 'generated_exports' / 'Term_UK_A' / 'Term_UK_A' / '_mx_classes.py'
++        term = build_fast_recursive_program(term_src, target='bench_net_cf')
++        default_sites = [
++            a for c in term.call_sites for a in c.bound_args if a.origin == 'default'
++        ]
++        self.assertTrue(default_sites)
++        self.assertTrue(any(a.source == 'None' for a in default_sites))
++
++
++    def test_generated_reference_runtime_executes_recursive_multiarg_program(self):
++        source = """
++class _c_Projection:
++    def _f_a(self, t, kind='A'):
++        if t <= 0:
++            return 1 if kind == 'A' else 2
++        return self.a(t - 1, kind) + self.b(t, kind)
++    def _f_b(self, t, kind='A'):
++        return t if kind == 'A' else 2 * t
++    def _f_out(self):
++        return self.a(4) + self.a(3, 'B')
++"""
++        with tempfile.TemporaryDirectory() as td:
++            pth = Path(td) / '_mx_classes.py'
++            pth.write_text(source)
++            program = build_fast_recursive_program(pth, target='out')
++            emitted = emit_fast_recursive_python(program)
++            ns = {}
++            exec(compile(emitted, '<fast-recursive-test>', 'exec'), ns, ns)
++            class Ctx: pass
++            rt = ns['FastRecursiveRuntime'](Ctx())
++            self.assertEqual(ns['fr_out'](rt), 25)
++
++    def test_provider_syntax_does_not_block_graph(self):
++        src = ROOT / 'generated_exports' / 'VA_US_S' / 'VA_US_S' / '_mx_classes.py'
++        p = build_fast_recursive_program(src, target='bench_net_cf')
++        self.assertTrue(p.graph_supported)
++        self.assertTrue(any(x.kind == 'provider' for x in p.external_calls))
++        self.assertIn('provider-call', p.formula_notes)
++
++    def test_first_class_cell_reference_fails_closed(self):
++        source = '''\nclass _c_Projection:\n    def _f_a(self, t):\n        return self.b\n    def _f_b(self, t):\n        return t\n'''
++        with tempfile.TemporaryDirectory() as td:
++            pth = Path(td) / '_mx_classes.py'
++            pth.write_text(source)
++            p = build_fast_recursive_program(pth, target='a')
++            self.assertFalse(p.graph_supported)
++            self.assertTrue(any('first-class Cell reference' in x for x in p.graph_blockers))
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/FAST_RECURSIVE_GRAPH_IMPLEMENTATION.md
++++ b/FAST_RECURSIVE_GRAPH_IMPLEMENTATION.md
+@@ -0,0 +1,116 @@
++# Fast-recursive graph implementation — dev74
++
++## Objective
++
++Make fast recursion graph-complete for the five benchmark products without inheriting the sequential compiler's stage/schedule machinery. Formula/data lowering is deliberately a separate capability: pandas/table/module/container syntax can remain unsupported for native emission without blocking recursive graph construction.
++
++## Implemented architecture
++
++```text
++model.export() _mx_classes.py
++        |
++        v
++Static exported Cell catalogue
++        |
++        v
++target closure over every syntactic self.<Cell>(...) call
++        |
++        +--> signature/default binding for every call site
++        +--> arbitrary Cell arity (0..N; benchmark max = 3)
++        +--> cache key = complete Cell argument tuple
++        +--> provider/module calls recorded as external leaves
++        |
++        v
++FastRecursiveProgram
++        |
++        +--> SCC analysis for diagnostics only
++        +--> NO stage construction
++        +--> NO monotone scan proof
++        +--> NO fences/materialized stage histories
++        +--> NO representative-policy trace closure
++```
++
++The SCC analysis does **not** schedule or reject recursive components. It only describes the static recursive graph. A 53-Cell SCC in `VA_US_S` is therefore admitted exactly the same way as a one-Cell recurrence.
++
++## Graph acceptance contract
++
++The graph layer fails closed only when recursive dispatch itself cannot be represented statically, for example:
++
++- first-class/dynamic Cell references rather than direct calls;
++- unbindable Cell call signatures (`*args`, `**kwargs`, unknown keywords, missing required arguments);
++- unresolved target Cells.
++
++The following are *not graph blockers*:
++
++- DataFrame/MultiIndex/table access;
++- `np`, `pd`, `math` operations;
++- lists/comprehensions/generators;
++- `raise` branches;
++- provider lookup semantics.
++
++Those are retained as formula/provider lowering notes for the next native-emission layer.
++
++## Full target-closure results
++
++| Model | Target | Cells | Call sites | Unique dependency pairs | Max Cell call arity | Recursive SCCs | Largest recursive SCC | Graph blockers |
++|---|---|---:|---:|---:|---:|---:|---:|---:|
++| BasicTerm_S | `pv_net_cf` | 35 | 68 | 63 | 1 | 1 | 4 | 0 |
++| Term_UK_A | `bench_net_cf` | 57 | 127 | 114 | 2 | 6 | 7 | 0 |
++| WOL_UK_S | `bench_net_cf` | 52 | 126 | 110 | 2 | 6 | 1 | 0 |
++| ULSG_US_S | `bench_net_cf` | 102 | 223 | 209 | 2 | 8 | 6 | 0 |
++| VA_US_S | `bench_net_cf` | 169 | 492 | 454 | 3 | 7 | 53 | 0 |
++
++`VA_US_S` is the decisive graph test. The 53-Cell recursive component includes account value, benefit-base, withdrawal, charge and guarantee state. `phi_glwb_vix` is present in the static closure even when the representative policies used by the earlier trace compiler do not execute the VIX branch.
++
++## Why this changes the VA diagnosis
++
++The earlier fast-recursive benchmark generator consumed a trace-normalized Stage artifact. That made program discovery policy-dependent and inherited a zero/time-argument assumption from the old physical generator.
++
++The dev74 graph path instead consumes exported source directly. It sees all syntactic Cell calls in all branches and binds them to the callee's complete exported signature. Therefore:
++
++- no policy sample is needed to discover the recursive graph;
++- multi-argument Cells such as `(t, i)` or `(t, timing, ...)` are valid graph edges;
++- default arguments are materialized in the direct recursive ABI;
++- memoization semantics can key on the full argument tuple;
++- SCC size/direction has no effect on admission.
++
++## Executable reference runtime
++
++`fast_recursive_python.py` lowers the same IR to one direct recursive Python function per Cell:
++
++```text
++fr_cell(runtime, args...)
++    -> memo lookup keyed by the complete argument tuple
++    -> _calc_cell(runtime, args...)
++    -> direct fr_dependency(runtime, ...) calls
++```
++
++All non-Cell syntax is preserved. This makes it possible to validate the recursion/graph ABI before native expression lowering. The generated reference runtime is bit-exact against the exported package on:
++
++- Term_UK_A: 8/8 policies;
++- WOL_UK_S: 7/7;
++- ULSG_US_S: 4/4;
++- VA_US_S: 9/9;
++- BasicTerm_S: first 1,000 policies of the existing 10,000-policy corpus.
++
++The full 10,000-policy BasicTerm native recursive prototype had already been validated in the preceding stage; the new generic Python reference is a correctness gate, not a throughput target.
++
++The same source is also emitted as Cython object mode with internal `cdef object` Cell functions. All five generated modules compile successfully and reproduce the same validation vectors. This proves that the complete recursive graph can be lowered to C-level direct Cell calls before any pandas/provider operation is converted to a native numeric representation.
++
++## Files
++
++- `compiler/modelx_graph/fast_recursive_graph.py` — static recursive graph/ABI implementation.
++- `compiler/modelx_graph/fast_recursive_python.py` — executable Python reference emitter.
++- `compiler/modelx_graph/fast_recursive_cython.py` — Cython object-mode graph/ABI emitter.
++- `benchmark_scripts/audit_fast_recursive_graph.py` — five-product graph census and manifest generator.
++- `benchmark_scripts/validate_fast_recursive_python.py` — full shipped-policy reference parity harness.
++- `benchmark_scripts/validate_fast_recursive_cython_object.py` — compiled recursive object-mode parity harness.
++- `tests/test_fast_recursive_graph.py` — acceptance tests, including VA's 53-Cell SCC and trace-independent VIX branch.
++- `fast_recursive_graph/*.json` — per-product complete recursive manifests.
++- `results/FAST_RECURSIVE_GRAPH_COVERAGE.json` — compact census.
++
++## Remaining work, intentionally outside this stage
++
++This stage does **not** claim that every Cell body can already be emitted as `noexcept nogil` Cython. The next layer should lower formula bodies and providers against this static graph, using explicit exact/step/grouped-step lookup semantics where possible and existing modelx-cython/Python fallback otherwise.
++
++The important result here is narrower: **there is no graph/scheduling reason preventing fast-recursive execution for any of the five benchmark products.**
+--- a/FAST_RECURSIVE_GRAPH_RESULTS.md
++++ b/FAST_RECURSIVE_GRAPH_RESULTS.md
+@@ -0,0 +1,58 @@
++# Fast-recursive graph results
++
++The new dev74 path builds the recursive program **statically from exported source**. No modelx execution trace, representative-policy sample, recurrence schedule, or Stage graph is used to discover dependencies.
++
++| Model | Cells in target closure | Cell call sites | Unique dependencies | Max Cell arity | Recursive SCCs | Largest SCC | Graph build | Graph blockers |
++|---|---:|---:|---:|---:|---:|---:|---:|---:|
++| BasicTerm_S | 35 | 68 | 63 | 1 | 1 | 4 | 0.018 s | 0 |
++| Term_UK_A | 57 | 127 | 114 | 2 | 6 | 7 | 0.055 s | 0 |
++| WOL_UK_S | 52 | 126 | 110 | 2 | 6 | 1 | 0.050 s | 0 |
++| ULSG_US_S | 102 | 223 | 209 | 2 | 8 | 6 | 0.159 s | 0 |
++| VA_US_S | 169 | 492 | 454 | 3 | 7 | 53 | 0.414 s | 0 |
++
++## Executable recursive-reference gate
++
++The same IR now emits a pure-Python recursive reference runtime. It rewrites direct Cell calls to direct `fr_<cell>(runtime, ...)` calls and memoizes every Cell by its complete argument tuple. Provider/table/module syntax is left untouched. This is not the performance backend; it is an executable proof that the graph ABI itself is sufficient.
++
++| Model | Policies validated | Result |
++|---|---:|---|
++| BasicTerm_S | first 1,000 of the existing 10,000-policy corpus | bit-exact |
++| Term_UK_A | 8/8 | bit-exact |
++| WOL_UK_S | 7/7 | bit-exact |
++| ULSG_US_S | 4/4 | bit-exact |
++| VA_US_S | 9/9 | bit-exact |
++
++For BasicTerm, the earlier fast-recursive Cython experiment already validated all 10,000 distinct policies. The new generic Python reference gate was bounded at 1,000 policies because its purpose is graph correctness, not throughput measurement.
++
++## Cython graph/ABI proof
++
++The same generated recursive program was also emitted as Cython **object mode**: every `_calc_*` and `fr_*` Cell is a `cdef object` function, so Cell-to-Cell recursion is a C-level call while pandas/table/module operations remain Python-object operations. This is deliberately not the final performance backend; it isolates graph/codegen feasibility from provider/type lowering.
++
++All five modules compiled successfully with Cython 3.2.4 / GCC `-O2`, and the resulting extensions matched the exported package exactly:
++
++| Model | Policies validated | Cython object-mode result |
++|---|---:|---|
++| BasicTerm_S | first 1,000 | bit-exact |
++| Term_UK_A | 8/8 | bit-exact |
++| WOL_UK_S | 7/7 | bit-exact |
++| ULSG_US_S | 4/4 | bit-exact |
++| VA_US_S | 9/9 | bit-exact |
++
++No generated recursive Cython module contains Stage execution, fences, or recurrence scheduling. The compiled VA module contains direct C-level recursive functions for the complete 169-Cell target closure, including `gawa_pp(t, timing)`-style multi-argument dispatch and the VIX recurrence.
++
++## VA result
++
++VA is no longer a graph special case. The static target closure contains 169 Cells and a 53-Cell recursive SCC. The VIX-specific `phi_glwb_vix` Cell is present without running a VIX policy, because every syntactic Cell call in every source branch is included.
++
++That means the earlier VA difficulty was caused by using trace-derived Stage artifacts as the *frontend* to the recursive prototype. The recursive execution model itself does not require VA's three-stage schedule.
++
++## Deferred blockers
++
++The following are intentionally recorded but do not block graph construction:
++
++- DataFrame/MultiIndex/provider lookups;
++- `np`/`pd`/`math` calls;
++- lists/comprehensions/generators;
++- `raise` branches and other Python syntax not yet in the native subset.
++
++Those belong to formula/provider lowering. They should be handled after the recursive graph and ABI, rather than forcing recurrence scheduling back into the architecture.

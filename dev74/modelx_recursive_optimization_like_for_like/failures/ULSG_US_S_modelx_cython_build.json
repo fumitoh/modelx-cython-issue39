@@ -1,0 +1,25 @@
+{
+  "model": "ULSG_US_S",
+  "policy_count": 4,
+  "sample_count": 4,
+  "sample": [
+    [
+      1
+    ],
+    [
+      2
+    ],
+    [
+      3
+    ],
+    [
+      4
+    ]
+  ],
+  "sample_meta": {
+    "method": "all_shipped_policies"
+  },
+  "status": "failed",
+  "error": "ModelxCythonBridgeError: modelx-cython build failed with exit code 1: \nError compiling Cython file:\n------------------------------------------------------------\n...\n\n        0.0028709 at the **[std]** 3.50% current rate, matching the notes.  The floor is\n        the contractual 2.0% guaranteed minimum [S3][S5][S7]; it does not bind at the\n        snapshot scale.\n        \"\"\"\n        return max((1 + self.crediting_rate_ann(t)) ** (1 / 12) - 1, self.guar_rate_mth())\n                                                                                       ^\n------------------------------------------------------------\nULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py:1047:87: complex types are unordered\nTraceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/mxcy/ULSG_US_S/setup.py\", line 7, in <module>\n    ext_modules=cythonize([\n        \"ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_sys.py\",\n    ...<2 lines>...\n        annotate=True\n    )\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1153, in cythonize\n    cythonize_one(*args)\n    ~~~~~~~~~~~~~^^^^^^^\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1297, in cythonize_one\n    raise CompileError(None, pyx_file)\nCython.Compiler.Errors.CompileError: ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py\n",
+  "traceback": "Traceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/fresh_build_mxcy_all.py\", line 30, in <module>\n    t=time.perf_counter(); p=build_modelx_cython_bridge(c,OUT/name,sample_point_keys=sample,force_rebuild=True,build_timeout_seconds=240.0); row['wall_build_s']=time.perf_counter()-t; row['status']='ok'; row['package']=p.package_name; row['root']=str(p.root); row['build_report']=p.build_report.__dict__\n                             ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/modelx_cython_bridge.py\", line 637, in build_modelx_cython_bridge\n    raise ModelxCythonBridgeError(\n        f\"modelx-cython build failed with exit code {returncode}: {tail}\"\n    )\nmodelx_graph.modelx_cython_bridge.ModelxCythonBridgeError: modelx-cython build failed with exit code 1: \nError compiling Cython file:\n------------------------------------------------------------\n...\n\n        0.0028709 at the **[std]** 3.50% current rate, matching the notes.  The floor is\n        the contractual 2.0% guaranteed minimum [S3][S5][S7]; it does not bind at the\n        snapshot scale.\n        \"\"\"\n        return max((1 + self.crediting_rate_ann(t)) ** (1 / 12) - 1, self.guar_rate_mth())\n                                                                                       ^\n------------------------------------------------------------\nULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py:1047:87: complex types are unordered\nTraceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/mxcy/ULSG_US_S/setup.py\", line 7, in <module>\n    ext_modules=cythonize([\n        \"ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_sys.py\",\n    ...<2 lines>...\n        annotate=True\n    )\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1153, in cythonize\n    cythonize_one(*args)\n    ~~~~~~~~~~~~~^^^^^^^\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1297, in cythonize_one\n    raise CompileError(None, pyx_file)\nCython.Compiler.Errors.CompileError: ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py\n\n"
+}

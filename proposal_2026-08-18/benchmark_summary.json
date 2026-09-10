@@ -1,0 +1,359 @@
+{
+  "title": "modelx compiler same-machine benchmark",
+  "date": "2026-08-18",
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Linux x86_64",
+    "cpu": "AMD EPYC 9V74 80-Core Processor (9 cores exposed, 1 thread/core)",
+    "modelx": "0.32.0",
+    "modelx_cython": "0.0.9",
+    "cython": "3.2.4",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "setuptools": "82.0.1",
+    "libcst": "1.9.0",
+    "monkeytype": "23.3.0 source",
+    "monkeytype_compatibility_note": "mypy_extensions was unavailable; a Python 3.13 compatibility shim re-exporting typing.TypedDict/_TypedDictMeta was used only to satisfy MonkeyType imports.",
+    "compiler_flags_modelx_cython": "-O3 -march=native",
+    "compiler_flags_semantic": "-O3 -march=native -fopenmp",
+    "blas_threads": 1
+  },
+  "methodology": {
+    "model_points": 10000,
+    "cell": "pv_net_cf",
+    "cold_process": "fresh Python process for every cold timing sample",
+    "repeats": {
+      "exported_python": 3,
+      "modelx_cython": 3,
+      "semantic_serial": 5,
+      "semantic_openmp_batch": 7,
+      "semantic_openmp_dropin": 5
+    },
+    "semantic_openmp_threads": 9,
+    "import_time_excluded_from_cold_runtime": true,
+    "memory": "peak RSS after cold calculation in the benchmark process",
+    "correctness": "full 10,000 point result vectors compared with numpy allclose plus max absolute/scaled-relative differences"
+  },
+  "models": {
+    "BasicTerm_S": {
+      "build": {
+        "modelx_export_s": 0.823885400999643,
+        "mx2cy_translate_s": 4.656663164999372,
+        "mx2cy_compile_s": 12.78277811099997,
+        "official_total_s": 18.263326676998986,
+        "semantic_export_s": 0.6526035659999252,
+        "semantic_analysis_s": 0.021904907999669376,
+        "semantic_codegen_s": 0.0030328989996633027,
+        "semantic_compile_s": 6.7646633540007315,
+        "semantic_total_s": 7.442204726999989,
+        "semantic_build_speedup": 2.4540209987425428
+      },
+      "runtime": {
+        "exported_python": {
+          "cold_ms_median": 21569.215944999996,
+          "cold_ms_min": 21061.6145540007,
+          "cold_ms_max": 24205.06741400004,
+          "warm_ms_median": 13.252245000330731,
+          "import_ms_median": 390.38060100028815,
+          "peak_rss_mb_median": 1868.98828125,
+          "checksum": 14489630.534601564,
+          "realized_itemspaces": 10000,
+          "native_proxies": 0
+        },
+        "modelx_cython": {
+          "cold_ms_median": 9407.994758000314,
+          "cold_ms_min": 8816.30007900003,
+          "cold_ms_max": 9452.650324000388,
+          "warm_ms_median": 5.25294099952589,
+          "import_ms_median": 389.9212300002546,
+          "peak_rss_mb_median": 593.10546875,
+          "checksum": 14489630.534601564,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_serial": {
+          "cold_ms_median": 223.24550099983753,
+          "cold_ms_min": 222.04464399965218,
+          "cold_ms_max": 234.81433800043305,
+          "warm_ms_median": 0.0004410003384691663,
+          "import_ms_median": 375.97183999969275,
+          "peak_rss_mb_median": 124.12109375,
+          "checksum": 14489630.534601538,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_batch": {
+          "cold_ms_median": 40.60336099973938,
+          "cold_ms_min": 39.407086000210256,
+          "cold_ms_max": 47.94183499961946,
+          "warm_ms_median": 0.0004910007191938348,
+          "import_ms_median": 389.2871899997772,
+          "peak_rss_mb_median": 124.0078125,
+          "checksum": 14489630.534601538,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_dropin": {
+          "cold_ms_median": 46.96720900028595,
+          "cold_ms_min": 35.57746699971176,
+          "cold_ms_max": 51.888138000322215,
+          "warm_ms_median": 4.117047000363527,
+          "import_ms_median": 374.35386100059986,
+          "peak_rss_mb_median": 123.91015625,
+          "checksum": 14489630.53460156,
+          "realized_itemspaces": 0,
+          "native_proxies": 10000
+        }
+      },
+      "speedups": {
+        "modelx_cython_vs_exported_python": 2.292647530086908,
+        "semantic_serial_vs_modelx_cython": 42.1419232005359,
+        "semantic_openmp_vs_modelx_cython": 231.70482754027927,
+        "semantic_dropin_vs_modelx_cython": 200.30985358195406,
+        "semantic_openmp_vs_exported_python": 531.2175005694342,
+        "semantic_openmp_vs_semantic_serial": 5.498202501050848
+      },
+      "memory": {
+        "modelx_cython_vs_semantic_rss_ratio": 4.7828072828072825,
+        "exported_python_vs_semantic_rss_ratio": 15.071536571536571
+      },
+      "correctness": {
+        "python_seconds": 20.9466133599999,
+        "cython_seconds": 9.862967018000745,
+        "semantic_seconds": 0.03964636199998495,
+        "cython_max_abs": 0.0,
+        "cython_max_rel": 0.0,
+        "cython_allclose_2e12": true,
+        "semantic_max_abs": 2.1827872842550278e-11,
+        "semantic_max_rel": 1.1368683772161603e-12,
+        "semantic_allclose_2e12": true,
+        "checksum_python": 14489630.53460154,
+        "checksum_cython": 14489630.53460154,
+        "checksum_semantic": 14489630.534601538
+      }
+    },
+    "BasicTerm_SE": {
+      "build": {
+        "modelx_export_s": 0.9417566120000629,
+        "mx2cy_translate_s": 3.8233,
+        "mx2cy_compile_s": 12.17,
+        "official_total_s": 16.93505661200006,
+        "semantic_export_s": 0.7980203699999038,
+        "semantic_analysis_s": 0.02674971399937931,
+        "semantic_codegen_s": 0.003537888000209932,
+        "semantic_compile_s": 7.022500746000333,
+        "semantic_total_s": 7.850808717999826,
+        "semantic_build_speedup": 2.157109824007361,
+        "mx2cy_spec": {
+          "cells_param_size": {
+            "t": 277
+          },
+          "derivation": "max portfolio proj_len = 12*policy_term - duration_mth(0) + 1"
+        },
+        "mx2cy_initial_spec_failure": {
+          "cells_param_size_t": 241,
+          "translate_seconds": 4.89631630599979,
+          "compile_seconds": 13.403024185000504,
+          "runtime_error": "IndexError: array index out of range",
+          "reason": "BasicTerm_SE includes future business (duration_mth down to -36), giving portfolio max proj_len=277."
+        }
+      },
+      "runtime": {
+        "exported_python": {
+          "cold_ms_median": 18997.526111999832,
+          "cold_ms_min": 18989.11922300067,
+          "cold_ms_max": 19296.340972000507,
+          "warm_ms_median": 11.426727000070969,
+          "import_ms_median": 419.42234400085,
+          "peak_rss_mb_median": 1676.73828125,
+          "checksum": 215146132.06848115,
+          "realized_itemspaces": 10000,
+          "native_proxies": 0
+        },
+        "modelx_cython": {
+          "cold_ms_median": 8736.092130000543,
+          "cold_ms_min": 8659.158065000156,
+          "cold_ms_max": 8853.434419999758,
+          "warm_ms_median": 6.89288299963664,
+          "import_ms_median": 428.8650489997963,
+          "peak_rss_mb_median": 1114.25,
+          "checksum": 215146132.06848115,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_serial": {
+          "cold_ms_median": 71.31285800005571,
+          "cold_ms_min": 70.72776899985911,
+          "cold_ms_max": 71.88422499984881,
+          "warm_ms_median": 0.0005210004019318148,
+          "import_ms_median": 427.54009400050563,
+          "peak_rss_mb_median": 124.94140625,
+          "checksum": 215146132.0684811,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_batch": {
+          "cold_ms_median": 15.1512009997532,
+          "cold_ms_min": 14.70599099957326,
+          "cold_ms_max": 32.57000600024185,
+          "warm_ms_median": 0.00047100002120714635,
+          "import_ms_median": 418.0362779998177,
+          "peak_rss_mb_median": 125.0390625,
+          "checksum": 215146132.0684811,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_dropin": {
+          "cold_ms_median": 23.676511000303435,
+          "cold_ms_min": 22.072486999604735,
+          "cold_ms_max": 25.065085000278486,
+          "warm_ms_median": 3.9642489991820185,
+          "import_ms_median": 435.6062530005147,
+          "peak_rss_mb_median": 125.45703125,
+          "checksum": 215146132.06848118,
+          "realized_itemspaces": 0,
+          "native_proxies": 10000
+        }
+      },
+      "speedups": {
+        "modelx_cython_vs_exported_python": 2.1746023083662984,
+        "semantic_serial_vs_modelx_cython": 122.50374441582075,
+        "semantic_openmp_vs_modelx_cython": 576.5940356901639,
+        "semantic_dropin_vs_modelx_cython": 368.9771744615827,
+        "semantic_openmp_vs_exported_python": 1253.86272100207,
+        "semantic_openmp_vs_semantic_serial": 4.706746217756423
+      },
+      "memory": {
+        "modelx_cython_vs_semantic_rss_ratio": 8.911215245235864,
+        "exported_python_vs_semantic_rss_ratio": 13.409715713839425
+      },
+      "correctness": {
+        "python_seconds": 17.701490161999573,
+        "cython_seconds": 8.73723704799977,
+        "semantic_seconds": 0.033165830000143615,
+        "cython_max_abs": 7.275957614183426e-12,
+        "cython_max_rel": 1.2499441438045354e-14,
+        "cython_allclose_2e12": true,
+        "semantic_max_abs": 1.3969838619232178e-09,
+        "semantic_max_rel": 3.637978807091713e-12,
+        "semantic_allclose_2e12": false,
+        "checksum_python": 215146132.0684811,
+        "checksum_cython": 215146132.0684811,
+        "checksum_semantic": 215146132.0684811
+      },
+      "correctness_interpretation": {
+        "max_scaled_relative": 3.637978807091713e-12,
+        "max_absolute": 1.3969838619232178e-09,
+        "worst_relative_point": 5342,
+        "reference": 0.25494590065500233,
+        "semantic": 0.2549459006586403,
+        "absolute_difference": 3.637978807091713e-12,
+        "allclose_at_5e12": true,
+        "note": "Difference is consistent with changed floating point evaluation order from recurrence/reduction fusion; portfolio checksum agrees at printed precision."
+      }
+    },
+    "BasicTerm_SC": {
+      "build": {
+        "modelx_export_s": 0.828108465000696,
+        "mx2cy_translate_s": 5.07491593099985,
+        "mx2cy_compile_s": 13.022318504000395,
+        "official_total_s": 18.925342900000942,
+        "semantic_export_s": 0.6862029479998455,
+        "semantic_analysis_s": 0.02134859299985692,
+        "semantic_codegen_s": 0.004540104000625433,
+        "semantic_compile_s": 6.761770174000048,
+        "semantic_total_s": 7.473861819000376,
+        "semantic_build_speedup": 2.5322040142471076
+      },
+      "runtime": {
+        "exported_python": {
+          "cold_ms_median": 15167.65443300028,
+          "cold_ms_min": 14826.852428000166,
+          "cold_ms_max": 15174.473982000563,
+          "warm_ms_median": 12.784040000042296,
+          "import_ms_median": 397.22092600004544,
+          "peak_rss_mb_median": 2081.0,
+          "checksum": 14489630.534601564,
+          "realized_itemspaces": 10000,
+          "native_proxies": 0
+        },
+        "modelx_cython": {
+          "cold_ms_median": 862.76531600015,
+          "cold_ms_min": 857.6103510004032,
+          "cold_ms_max": 877.9756149997411,
+          "warm_ms_median": 1.970733000234759,
+          "import_ms_median": 393.9990580001904,
+          "peak_rss_mb_median": 598.015625,
+          "checksum": 14489630.53460156,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_serial": {
+          "cold_ms_median": 222.21999500015954,
+          "cold_ms_min": 217.35467899998184,
+          "cold_ms_max": 224.33917300077155,
+          "warm_ms_median": 0.0004309995347284712,
+          "import_ms_median": 399.7378639996896,
+          "peak_rss_mb_median": 123.984375,
+          "checksum": 14489630.534601538,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_batch": {
+          "cold_ms_median": 40.426087999549054,
+          "cold_ms_min": 38.38755400010996,
+          "cold_ms_max": 47.716500000206,
+          "warm_ms_median": 0.0005100000635138713,
+          "import_ms_median": 428.33658499966987,
+          "peak_rss_mb_median": 123.921875,
+          "checksum": 14489630.534601538,
+          "realized_itemspaces": 0,
+          "native_proxies": 0
+        },
+        "semantic_openmp_dropin": {
+          "cold_ms_median": 45.97741099951236,
+          "cold_ms_min": 45.43654899953253,
+          "cold_ms_max": 74.9277989998518,
+          "warm_ms_median": 3.73514900002192,
+          "import_ms_median": 393.5458549995019,
+          "peak_rss_mb_median": 123.9296875,
+          "checksum": 14489630.53460156,
+          "realized_itemspaces": 0,
+          "native_proxies": 10000
+        }
+      },
+      "speedups": {
+        "modelx_cython_vs_exported_python": 17.58027838128537,
+        "semantic_serial_vs_modelx_cython": 3.8824828341820936,
+        "semantic_openmp_vs_modelx_cython": 21.341795822780924,
+        "semantic_dropin_vs_modelx_cython": 18.764982569577498,
+        "semantic_openmp_vs_exported_python": 375.1947117210419,
+        "semantic_openmp_vs_semantic_serial": 5.4969453141901425
+      },
+      "memory": {
+        "modelx_cython_vs_semantic_rss_ratio": 4.825747068465515,
+        "exported_python_vs_semantic_rss_ratio": 16.792838229731434
+      },
+      "correctness": {
+        "python_seconds": 14.024572842000453,
+        "cython_seconds": 1.6846639599998525,
+        "semantic_seconds": 0.038220247000026575,
+        "cython_max_abs": 2.1827872842550278e-11,
+        "cython_max_rel": 1.1368683772161603e-12,
+        "cython_allclose_2e12": true,
+        "semantic_max_abs": 2.1827872842550278e-11,
+        "semantic_max_rel": 1.1368683772161603e-12,
+        "semantic_allclose_2e12": true,
+        "checksum_python": 14489630.53460154,
+        "checksum_cython": 14489630.534601538,
+        "checksum_semantic": 14489630.534601538
+      }
+    }
+  },
+  "geometric_mean_speedups": {
+    "semantic_openmp_vs_modelx_cython": 141.8008158572427,
+    "semantic_serial_vs_modelx_cython": 27.163835158648578,
+    "semantic_openmp_vs_exported_python": 629.8827153345013,
+    "semantic_build_vs_official_pipeline": 2.3754710467271303
+  }
+}

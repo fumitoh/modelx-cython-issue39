@@ -1,0 +1,43 @@
+{
+  "cython": "3.2.4",
+  "python": "3.13.5",
+  "compiler": "gcc (Debian 14.2.0-19) 14.2.0",
+  "command": "cd fast_recursive_cython_object && python setup.py build_ext --inplace MODEL=<model>",
+  "models": [
+    {
+      "model": "BasicTerm_S",
+      "status": "ok",
+      "source": "fast_recursive_cython_object/BasicTerm_S.pyx",
+      "source_bytes": 17642,
+      "extension_built": true
+    },
+    {
+      "model": "Term_UK_A",
+      "status": "ok",
+      "source": "fast_recursive_cython_object/Term_UK_A.pyx",
+      "source_bytes": 37769,
+      "extension_built": true
+    },
+    {
+      "model": "WOL_UK_S",
+      "status": "ok",
+      "source": "fast_recursive_cython_object/WOL_UK_S.pyx",
+      "source_bytes": 33905,
+      "extension_built": true
+    },
+    {
+      "model": "ULSG_US_S",
+      "status": "ok",
+      "source": "fast_recursive_cython_object/ULSG_US_S.pyx",
+      "source_bytes": 74733,
+      "extension_built": true
+    },
+    {
+      "model": "VA_US_S",
+      "status": "ok",
+      "source": "fast_recursive_cython_object/VA_US_S.pyx",
+      "source_bytes": 98950,
+      "extension_built": true
+    }
+  ]
+}

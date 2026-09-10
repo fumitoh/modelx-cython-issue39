@@ -1,0 +1,778 @@
+[
+  {
+    "model": "BasicTerm_S",
+    "policy_count": 10000,
+    "sample_count": 67,
+    "sample": [
+      [
+        1
+      ],
+      [
+        10000
+      ],
+      [
+        150
+      ],
+      [
+        55
+      ],
+      [
+        9
+      ],
+      [
+        3
+      ],
+      [
+        2
+      ],
+      [
+        5
+      ],
+      [
+        1262
+      ],
+      [
+        2609
+      ],
+      [
+        18
+      ],
+      [
+        115
+      ],
+      [
+        114
+      ],
+      [
+        113
+      ],
+      [
+        112
+      ],
+      [
+        4
+      ],
+      [
+        8
+      ],
+      [
+        182
+      ],
+      [
+        342
+      ],
+      [
+        273
+      ],
+      [
+        251
+      ],
+      [
+        358
+      ],
+      [
+        540
+      ],
+      [
+        250
+      ],
+      [
+        300
+      ],
+      [
+        98
+      ],
+      [
+        125
+      ],
+      [
+        4760
+      ],
+      [
+        5669
+      ],
+      [
+        8594
+      ],
+      [
+        6036
+      ],
+      [
+        2942
+      ],
+      [
+        2465
+      ],
+      [
+        5834
+      ],
+      [
+        870
+      ],
+      [
+        1468
+      ],
+      [
+        1279
+      ],
+      [
+        324
+      ],
+      [
+        646
+      ],
+      [
+        969
+      ],
+      [
+        1291
+      ],
+      [
+        1614
+      ],
+      [
+        1936
+      ],
+      [
+        2259
+      ],
+      [
+        2581
+      ],
+      [
+        2904
+      ],
+      [
+        3226
+      ],
+      [
+        3549
+      ],
+      [
+        3872
+      ],
+      [
+        4194
+      ],
+      [
+        4517
+      ],
+      [
+        4839
+      ],
+      [
+        5162
+      ],
+      [
+        5484
+      ],
+      [
+        5807
+      ],
+      [
+        6129
+      ],
+      [
+        6452
+      ],
+      [
+        6775
+      ],
+      [
+        7097
+      ],
+      [
+        7420
+      ],
+      [
+        7742
+      ],
+      [
+        8065
+      ],
+      [
+        8387
+      ],
+      [
+        8710
+      ],
+      [
+        9032
+      ],
+      [
+        9355
+      ],
+      [
+        9677
+      ]
+    ],
+    "sample_meta": {
+      "portfolio_point_count": 10000,
+      "explicit_point_count": 0,
+      "selected_point_count": 67,
+      "max_points": 96,
+      "point_parameter_count": 1,
+      "reference_profiles": [
+        {
+          "reference": "disc_rate_ann",
+          "covered_points": 150,
+          "columns": [
+            {
+              "name": "zero_spot",
+              "unique_count": 148
+            }
+          ]
+        },
+        {
+          "reference": "model_point_table",
+          "covered_points": 10000,
+          "columns": [
+            {
+              "name": "age_at_entry",
+              "unique_count": 40
+            },
+            {
+              "name": "sex",
+              "unique_count": 2
+            },
+            {
+              "name": "policy_term",
+              "unique_count": 3
+            },
+            {
+              "name": "policy_count",
+              "unique_count": 1
+            },
+            {
+              "name": "sum_assured",
+              "unique_count": 991
+            }
+          ]
+        },
+        {
+          "reference": "mort_table",
+          "covered_points": 103,
+          "columns": [
+            {
+              "name": "0",
+              "unique_count": 98
+            },
+            {
+              "name": "1",
+              "unique_count": 98
+            },
+            {
+              "name": "2",
+              "unique_count": 97
+            },
+            {
+              "name": "3",
+              "unique_count": 97
+            },
+            {
+              "name": "4",
+              "unique_count": 96
+            },
+            {
+              "name": "5",
+              "unique_count": 95
+            }
+          ]
+        }
+      ],
+      "reason_counts": {
+        "disc_rate_ann.zero_spot:max": 1,
+        "disc_rate_ann.zero_spot:min": 1,
+        "model_point_table.age_at_entry:group_max": 6,
+        "model_point_table.age_at_entry:group_min": 6,
+        "model_point_table.age_at_entry:max": 1,
+        "model_point_table.age_at_entry:min": 1,
+        "model_point_table.policy_count:category": 1,
+        "model_point_table.policy_count:max": 1,
+        "model_point_table.policy_count:min": 1,
+        "model_point_table.policy_term:category": 3,
+        "model_point_table.policy_term:max": 1,
+        "model_point_table.policy_term:min": 1,
+        "model_point_table.sex:category": 2,
+        "model_point_table.sum_assured:group_max": 6,
+        "model_point_table.sum_assured:group_min": 6,
+        "model_point_table.sum_assured:max": 1,
+        "model_point_table.sum_assured:min": 1,
+        "model_point_table:category_combination": 6,
+        "mort_table.0:max": 1,
+        "mort_table.0:min": 1,
+        "mort_table.1:max": 1,
+        "mort_table.1:min": 1,
+        "mort_table.2:max": 1,
+        "mort_table.2:min": 1,
+        "mort_table.3:max": 1,
+        "mort_table.3:min": 1,
+        "mort_table.4:max": 1,
+        "mort_table.4:min": 1,
+        "mort_table.5:max": 1,
+        "mort_table.5:min": 1,
+        "portfolio_first": 1,
+        "portfolio_last": 1,
+        "portfolio_spread": 32,
+        "representative": 1
+      },
+      "selected_points": [
+        [
+          1
+        ],
+        [
+          10000
+        ],
+        [
+          150
+        ],
+        [
+          55
+        ],
+        [
+          9
+        ],
+        [
+          3
+        ],
+        [
+          2
+        ],
+        [
+          5
+        ],
+        [
+          1262
+        ],
+        [
+          2609
+        ],
+        [
+          18
+        ],
+        [
+          115
+        ],
+        [
+          114
+        ],
+        [
+          113
+        ],
+        [
+          112
+        ],
+        [
+          4
+        ],
+        [
+          8
+        ],
+        [
+          182
+        ],
+        [
+          342
+        ],
+        [
+          273
+        ],
+        [
+          251
+        ],
+        [
+          358
+        ],
+        [
+          540
+        ],
+        [
+          250
+        ],
+        [
+          300
+        ],
+        [
+          98
+        ],
+        [
+          125
+        ],
+        [
+          4760
+        ],
+        [
+          5669
+        ],
+        [
+          8594
+        ],
+        [
+          6036
+        ],
+        [
+          2942
+        ],
+        [
+          2465
+        ],
+        [
+          5834
+        ],
+        [
+          870
+        ],
+        [
+          1468
+        ],
+        [
+          1279
+        ],
+        [
+          324
+        ],
+        [
+          646
+        ],
+        [
+          969
+        ],
+        [
+          1291
+        ],
+        [
+          1614
+        ],
+        [
+          1936
+        ],
+        [
+          2259
+        ],
+        [
+          2581
+        ],
+        [
+          2904
+        ],
+        [
+          3226
+        ],
+        [
+          3549
+        ],
+        [
+          3872
+        ],
+        [
+          4194
+        ],
+        [
+          4517
+        ],
+        [
+          4839
+        ],
+        [
+          5162
+        ],
+        [
+          5484
+        ],
+        [
+          5807
+        ],
+        [
+          6129
+        ],
+        [
+          6452
+        ],
+        [
+          6775
+        ],
+        [
+          7097
+        ],
+        [
+          7420
+        ],
+        [
+          7742
+        ],
+        [
+          8065
+        ],
+        [
+          8387
+        ],
+        [
+          8710
+        ],
+        [
+          9032
+        ],
+        [
+          9355
+        ],
+        [
+          9677
+        ]
+      ]
+    },
+    "wall_build_s": 25.78974702100095,
+    "status": "ok",
+    "package": "BasicTerm_S_mxg_f32da97f78_nomx_cy",
+    "root": "/mnt/data/lfl_benchmark/mxcy/BasicTerm_S",
+    "build_report": {
+      "export_package": "BasicTerm_S_mxg_f32da97f78_nomx",
+      "compiled_package": "BasicTerm_S_mxg_f32da97f78_nomx_cy",
+      "target": {
+        "space_path": [
+          "Projection"
+        ],
+        "point_parameter_count": 1,
+        "representative_point": [
+          1
+        ],
+        "cell_name": "pv_net_cf",
+        "cell_args": []
+      },
+      "sample_point_count": 67,
+      "sample_point_fingerprint": "0ba4a738b0e86d6b823e0f56e3cff50baf4db587050596889fed193f23a35124",
+      "export_seconds": 0.981196982000256,
+      "translate_compile_seconds": 24.80409212000086,
+      "total_seconds": 25.785886269997718,
+      "package_bytes": 8902326,
+      "shared_library_bytes": 3693832,
+      "stdout_path": "/mnt/data/lfl_benchmark/mxcy/BasicTerm_S/mxg_bridge_build.stdout.txt",
+      "stderr_path": "/mnt/data/lfl_benchmark/mxcy/BasicTerm_S/mxg_bridge_build.stderr.txt",
+      "staged_external_files": [
+        "basic_term_sample.xlsx",
+        "create_premium_table.ipynb",
+        "generate_model_points.ipynb",
+        "generate_model_points_ASL.ipynb",
+        "generate_model_points_with_duration.ipynb",
+        "run_sc.py",
+        "sample.py",
+        "spec.py"
+      ]
+    },
+    "sanity_exec_s": 10.150812501000473,
+    "sanity_checksum": 14489630.53460154,
+    "sanity_count": 10000
+  },
+  {
+    "model": "Term_UK_A",
+    "policy_count": 8,
+    "sample_count": 8,
+    "sample": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8
+      ]
+    ],
+    "sample_meta": {
+      "method": "all_shipped_policies"
+    },
+    "wall_build_s": 24.38952272499955,
+    "status": "ok",
+    "package": "Term_UK_A_mxg_778c82b8ac_nomx_cy",
+    "root": "/mnt/data/lfl_benchmark/mxcy/Term_UK_A",
+    "build_report": {
+      "export_package": "Term_UK_A_mxg_778c82b8ac_nomx",
+      "compiled_package": "Term_UK_A_mxg_778c82b8ac_nomx_cy",
+      "target": {
+        "space_path": [
+          "Projection"
+        ],
+        "point_parameter_count": 1,
+        "representative_point": [
+          1
+        ],
+        "cell_name": "bench_net_cf",
+        "cell_args": []
+      },
+      "sample_point_count": 8,
+      "sample_point_fingerprint": "06505b6e7de5278ab058aa4ccc05ddb3c1e5d4dcd53f44e11e6a44a32cbd9898",
+      "export_seconds": 0.4350719100002607,
+      "translate_compile_seconds": 23.949715218001074,
+      "total_seconds": 24.385592610000458,
+      "package_bytes": 10730789,
+      "shared_library_bytes": 4368464,
+      "stdout_path": "/mnt/data/lfl_benchmark/mxcy/Term_UK_A/mxg_bridge_build.stdout.txt",
+      "stderr_path": "/mnt/data/lfl_benchmark/mxcy/Term_UK_A/mxg_bridge_build.stderr.txt",
+      "staged_external_files": [
+        "lapse_table.csv",
+        "model.md",
+        "model_point_table.csv",
+        "mort_table.csv",
+        "product-spec.md",
+        "run.py",
+        "select_factor_table.csv",
+        "sources.md",
+        "technical-notes.md"
+      ]
+    },
+    "sanity_exec_s": 0.01383444300154224,
+    "sanity_checksum": -18242.07516534913,
+    "sanity_count": 8
+  },
+  {
+    "model": "WOL_UK_S",
+    "policy_count": 7,
+    "sample_count": 7,
+    "sample": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ]
+    ],
+    "sample_meta": {
+      "method": "all_shipped_policies"
+    },
+    "wall_build_s": 27.03130147000047,
+    "status": "ok",
+    "package": "WOL_UK_S_mxg_96ebab816f_nomx_cy",
+    "root": "/mnt/data/lfl_benchmark/mxcy/WOL_UK_S",
+    "build_report": {
+      "export_package": "WOL_UK_S_mxg_96ebab816f_nomx",
+      "compiled_package": "WOL_UK_S_mxg_96ebab816f_nomx_cy",
+      "target": {
+        "space_path": [
+          "Projection"
+        ],
+        "point_parameter_count": 1,
+        "representative_point": [
+          1
+        ],
+        "cell_name": "bench_net_cf",
+        "cell_args": []
+      },
+      "sample_point_count": 7,
+      "sample_point_fingerprint": "4e91833dc99d4d12254440fb09cf9c9d05d1ac681d8d593a7298084329096cd1",
+      "export_seconds": 0.47917017900181236,
+      "translate_compile_seconds": 26.547520110998448,
+      "total_seconds": 27.027929073999985,
+      "package_bytes": 9993837,
+      "shared_library_bytes": 4062176,
+      "stdout_path": "/mnt/data/lfl_benchmark/mxcy/WOL_UK_S/mxg_bridge_build.stdout.txt",
+      "stderr_path": "/mnt/data/lfl_benchmark/mxcy/WOL_UK_S/mxg_bridge_build.stderr.txt",
+      "staged_external_files": [
+        "lapse_table.csv",
+        "model.md",
+        "model_point_table.csv",
+        "mort_table.csv",
+        "product-spec.md",
+        "run.py",
+        "sources.md",
+        "technical-notes.md"
+      ]
+    },
+    "sanity_exec_s": 0.5849132530020142,
+    "sanity_checksum": -17894.242029082296,
+    "sanity_count": 7
+  },
+  {
+    "model": "ULSG_US_S",
+    "policy_count": 4,
+    "sample_count": 4,
+    "sample": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ]
+    ],
+    "sample_meta": {
+      "method": "all_shipped_policies"
+    },
+    "status": "failed",
+    "error": "ModelxCythonBridgeError: modelx-cython build failed with exit code 1: \nError compiling Cython file:\n------------------------------------------------------------\n...\n\n        0.0028709 at the **[std]** 3.50% current rate, matching the notes.  The floor is\n        the contractual 2.0% guaranteed minimum [S3][S5][S7]; it does not bind at the\n        snapshot scale.\n        \"\"\"\n        return max((1 + self.crediting_rate_ann(t)) ** (1 / 12) - 1, self.guar_rate_mth())\n                                                                                       ^\n------------------------------------------------------------\nULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py:1047:87: complex types are unordered\nTraceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/mxcy/ULSG_US_S/setup.py\", line 7, in <module>\n    ext_modules=cythonize([\n        \"ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_sys.py\",\n    ...<2 lines>...\n        annotate=True\n    )\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1153, in cythonize\n    cythonize_one(*args)\n    ~~~~~~~~~~~~~^^^^^^^\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1297, in cythonize_one\n    raise CompileError(None, pyx_file)\nCython.Compiler.Errors.CompileError: ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py\n",
+    "traceback": "Traceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/fresh_build_mxcy_all.py\", line 30, in <module>\n    t=time.perf_counter(); p=build_modelx_cython_bridge(c,OUT/name,sample_point_keys=sample,force_rebuild=True,build_timeout_seconds=240.0); row['wall_build_s']=time.perf_counter()-t; row['status']='ok'; row['package']=p.package_name; row['root']=str(p.root); row['build_report']=p.build_report.__dict__\n                             ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/modelx_cython_bridge.py\", line 637, in build_modelx_cython_bridge\n    raise ModelxCythonBridgeError(\n        f\"modelx-cython build failed with exit code {returncode}: {tail}\"\n    )\nmodelx_graph.modelx_cython_bridge.ModelxCythonBridgeError: modelx-cython build failed with exit code 1: \nError compiling Cython file:\n------------------------------------------------------------\n...\n\n        0.0028709 at the **[std]** 3.50% current rate, matching the notes.  The floor is\n        the contractual 2.0% guaranteed minimum [S3][S5][S7]; it does not bind at the\n        snapshot scale.\n        \"\"\"\n        return max((1 + self.crediting_rate_ann(t)) ** (1 / 12) - 1, self.guar_rate_mth())\n                                                                                       ^\n------------------------------------------------------------\nULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py:1047:87: complex types are unordered\nTraceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/mxcy/ULSG_US_S/setup.py\", line 7, in <module>\n    ext_modules=cythonize([\n        \"ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_sys.py\",\n    ...<2 lines>...\n        annotate=True\n    )\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1153, in cythonize\n    cythonize_one(*args)\n    ~~~~~~~~~~~~~^^^^^^^\n  File \"/opt/pyvenv/lib/python3.13/site-packages/Cython/Build/Dependencies.py\", line 1297, in cythonize_one\n    raise CompileError(None, pyx_file)\nCython.Compiler.Errors.CompileError: ULSG_US_S_mxg_82773408d0_nomx_cy/_mx_classes.py\n\n"
+  },
+  {
+    "model": "VA_US_S",
+    "policy_count": 9,
+    "sample_count": 9,
+    "sample": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ],
+      [
+        4
+      ],
+      [
+        5
+      ],
+      [
+        6
+      ],
+      [
+        7
+      ],
+      [
+        8
+      ],
+      [
+        9
+      ]
+    ],
+    "sample_meta": {
+      "method": "all_shipped_policies"
+    },
+    "status": "failed",
+    "error": "ModelxCythonBridgeError: modelx-cython build failed with exit code 1: _S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1909, in _f_gawa_pp\n    def _f_gawa_pp(self, t):\n    \n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/tracer.py\", line 509, in __call__\n    func = get_func(frame)\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/monkeytype_tracing.py\", line 207, in get_func\n    func = get_func_in_mro(first_arg, code)\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/monkeytype_tracing.py\", line 165, in get_func_in_mro\n    val = inspect.getattr_static(obj, code.co_name, None)\n  File \"/usr/lib/python3.13/inspect.py\", line 1834, in getattr_static\n    dict_attr = _shadowed_dict(klass)\nRecursionError: maximum recursion depth exceeded\n",
+    "traceback": "Traceback (most recent call last):\n  File \"/mnt/data/lfl_benchmark/fresh_build_mxcy_all.py\", line 30, in <module>\n    t=time.perf_counter(); p=build_modelx_cython_bridge(c,OUT/name,sample_point_keys=sample,force_rebuild=True,build_timeout_seconds=240.0); row['wall_build_s']=time.perf_counter()-t; row['status']='ok'; row['package']=p.package_name; row['root']=str(p.root); row['build_report']=p.build_report.__dict__\n                             ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/compiler/modelx_graph/modelx_cython_bridge.py\", line 637, in build_modelx_cython_bridge\n    raise ModelxCythonBridgeError(\n        f\"modelx-cython build failed with exit code {returncode}: {tail}\"\n    )\nmodelx_graph.modelx_cython_bridge.ModelxCythonBridgeError: modelx-cython build failed with exit code 1: _S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1922, in _f_gawa_pp\n    g = self.gawa_pp_at(t, \"BEF_ANNIV\")\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3702, in gawa_pp_at\n    val = self._f_gawa_pp_at(t, timing)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1894, in _f_gawa_pp_at\n    g = self.gawa_pp(t - 1)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 3710, in gawa_pp\n    val = self._f_gawa_pp(t)\n  File \"/mnt/data/lfl_benchmark/mxcy/VA_US_S/VA_US_S_mxg_e6aefd4967_nomx/_mx_classes.py\", line 1909, in _f_gawa_pp\n    def _f_gawa_pp(self, t):\n    \n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/tracer.py\", line 509, in __call__\n    func = get_func(frame)\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/monkeytype_tracing.py\", line 207, in get_func\n    func = get_func_in_mro(first_arg, code)\n  File \"/mnt/data/modelx_export_review/modelx_compiler_handoff_2026-09-05_v0.23.0.dev73_bounded_context_accessors/third_party/src/modelx-cython-main/modelx_cython/monkeytype_tracing.py\", line 165, in get_func_in_mro\n    val = inspect.getattr_static(obj, code.co_name, None)\n  File \"/usr/lib/python3.13/inspect.py\", line 1834, in getattr_static\n    dict_attr = _shadowed_dict(klass)\nRecursionError: maximum recursion depth exceeded\n\n"
+  }
+]

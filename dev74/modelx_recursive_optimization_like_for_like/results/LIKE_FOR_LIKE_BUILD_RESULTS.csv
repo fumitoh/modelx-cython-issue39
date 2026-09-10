@@ -1,0 +1,6 @@
+model,policy_count,model_export_generation_s,modelx_cython_status,modelx_cython_build_s,fast_recursive_trace_s,fast_recursive_prepare_s,fast_recursive_c_compile_s,compact_sequential_c_compile_s
+BasicTerm_S,10000,0.8135051780009235,ok,25.78974702100095,,,5.9,5.28
+Term_UK_A,8,0.49422559199956595,ok,24.38952272499955,,,,
+WOL_UK_S,7,0.35977258300044923,ok,27.03130147000047,5.5513995949986565,10.599084882996976,6.971251609000319,
+ULSG_US_S,4,0.7716342620005889,failed,,11.415061809002509,32.40082334199906,10.010959121002088,
+VA_US_S,9,1.198382301001402,ok,81.84077772599994,,,,

@@ -1,0 +1,9 @@
+UserWarning: call stack trace activated
+UserWarning: call stack trace deactivated
+{"event": "initial_trace", "seconds": 5.190456050000648, "key": 1, "nodes": 67462, "run_keys": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+UserWarning: call stack trace activated
+UserWarning: call stack trace deactivated
+UserWarning: call stack trace activated
+UserWarning: call stack trace deactivated
+UserWarning: call stack trace activated
+UserWarning: call stack trace deactivated

@@ -1,0 +1,2108 @@
+{
+  "source_path": "/mnt/data/fastrec_graph_work/modelx_recursive_optimization_like_for_like/generated_exports/WOL_UK_S/WOL_UK_S/_mx_classes.py",
+  "class_name": "_c_Projection",
+  "space_name": "Projection",
+  "target": "bench_net_cf",
+  "graph_supported": true,
+  "graph_blockers": [],
+  "cell_count": 52,
+  "call_site_count": 126,
+  "unique_dependency_count": 110,
+  "external_call_count": 3,
+  "max_call_arity": 2,
+  "scc_count": 52,
+  "recursive_scc_count": 6,
+  "max_recursive_scc_size": 1,
+  "recursive_sccs": [
+    [
+      "benefit_pp"
+    ],
+    [
+      "claims"
+    ],
+    [
+      "pols_if"
+    ],
+    [
+      "pols_pu"
+    ],
+    [
+      "prem_cum_pp"
+    ],
+    [
+      "pu_benefit"
+    ]
+  ],
+  "cells": {
+    "adb_multiplier": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "age": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "age_at_entry",
+        "duration"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "age_at_entry",
+          "source": "self.age_at_entry()",
+          "bound_args": []
+        },
+        {
+          "callee": "duration",
+          "source": "self.duration(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "age_at_entry": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "bench_net_cf": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "net_cf",
+        "proj_len"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "net_cf",
+          "source": "self.net_cf(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "dynamic-expression"
+            }
+          ]
+        },
+        {
+          "callee": "proj_len",
+          "source": "self.proj_len()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "generator"
+      ]
+    },
+    "benefit_pp": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        },
+        {
+          "name": "kind",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t",
+        "kind"
+      ],
+      "dependencies": [
+        "adb_multiplier",
+        "benefit_pp",
+        "cell",
+        "cover_pp",
+        "in_moratorium",
+        "payments_expected",
+        "payments_made",
+        "prem_cum_pp",
+        "pu_variant"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "in_moratorium",
+          "source": "self.in_moratorium(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "in_moratorium",
+          "source": "self.in_moratorium(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "prem_cum_pp",
+          "source": "self.prem_cum_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "adb_multiplier",
+          "source": "self.adb_multiplier()",
+          "bound_args": []
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        },
+        {
+          "callee": "pu_variant",
+          "source": "self.pu_variant()",
+          "bound_args": []
+        },
+        {
+          "callee": "payments_expected",
+          "source": "self.payments_expected()",
+          "bound_args": []
+        },
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "payments_made",
+          "source": "self.payments_made(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "benefit_pp",
+          "source": "self.benefit_pp(t, 'NON_ACC')",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "kind",
+              "source": "'NON_ACC'",
+              "origin": "explicit",
+              "relation": "literal"
+            }
+          ]
+        },
+        {
+          "callee": "benefit_pp",
+          "source": "self.benefit_pp(t, 'ACC')",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "kind",
+              "source": "'ACC'",
+              "origin": "explicit",
+              "relation": "literal"
+            }
+          ]
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "prem_cum_pp",
+          "source": "self.prem_cum_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "raise"
+      ]
+    },
+    "cell": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "raise",
+        "subscript"
+      ]
+    },
+    "cessation_mths": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "claims": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        },
+        {
+          "name": "kind",
+          "default": "None"
+        }
+      ],
+      "cache_key": [
+        "t",
+        "kind"
+      ],
+      "dependencies": [
+        "benefit_pp",
+        "claims",
+        "mort_rate_mth",
+        "pols_death",
+        "pu_benefit"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_death",
+          "source": "self.pols_death(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "benefit_pp",
+          "source": "self.benefit_pp(t, 'DEATH')",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "kind",
+              "source": "'DEATH'",
+              "origin": "explicit",
+              "relation": "literal"
+            }
+          ]
+        },
+        {
+          "callee": "pu_benefit",
+          "source": "self.pu_benefit(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "claims",
+          "source": "self.claims(t, k)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "kind",
+              "source": "k",
+              "origin": "explicit",
+              "relation": "dynamic-expression"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "generator",
+        "raise"
+      ]
+    },
+    "commissions": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "policy_year",
+        "premiums"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "premiums",
+          "source": "self.premiums(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "cover_pp": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "esc_cover_step",
+        "policy_year",
+        "sum_assured"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "sum_assured",
+          "source": "self.sum_assured()",
+          "bound_args": []
+        },
+        {
+          "callee": "esc_cover_step",
+          "source": "self.esc_cover_step()",
+          "bound_args": []
+        },
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "duration": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [],
+      "dependency_call_sites": [],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "esc_cover_step": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "escalation"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "escalation",
+          "source": "self.escalation()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "esc_prem_step": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "escalation"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "escalation",
+          "source": "self.escalation()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "escalation": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "raise",
+        "subscript"
+      ]
+    },
+    "expense_acq_pp": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cell"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "expense_maint_pp": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cell"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "expenses": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "expense_acq_pp",
+        "expense_maint_pp",
+        "inflation_factor",
+        "pols_all",
+        "pols_if"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "expense_acq_pp",
+          "source": "self.expense_acq_pp()",
+          "bound_args": []
+        },
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "pols_all",
+          "source": "self.pols_all(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "inflation_factor",
+          "source": "self.inflation_factor(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "expense_maint_pp",
+          "source": "self.expense_maint_pp()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "in_moratorium": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "moratorium_mths"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "moratorium_mths",
+          "source": "self.moratorium_mths()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "inflation_factor": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "policy_year"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "lapse_rate": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "cessation_mths",
+        "cover_pp",
+        "lapse_rate_base",
+        "prem_cum_pp"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "lapse_rate_base",
+          "source": "self.lapse_rate_base(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        },
+        {
+          "callee": "prem_cum_pp",
+          "source": "self.prem_cum_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cover_pp",
+          "source": "self.cover_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "lapse_rate_base": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "cell",
+        "policy_year"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [
+        "self.data.lapse_table()"
+      ],
+      "syntax_features": [
+        "provider-call",
+        "subscript"
+      ]
+    },
+    "lapse_rate_mth": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "lapse_rate"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "lapse_rate",
+          "source": "self.lapse_rate(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "model_point": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [],
+      "dependency_call_sites": [],
+      "external_calls": [
+        "self.data.model_point_table()"
+      ],
+      "syntax_features": [
+        "provider-call",
+        "subscript"
+      ]
+    },
+    "moratorium_mths": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "mort_basis": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cell"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "mort_improve_factor": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "policy_year"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "mort_loading": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cell"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cell",
+          "source": "self.cell()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "mort_rate": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "age",
+        "mort_basis",
+        "mort_improve_factor",
+        "mort_loading",
+        "sex",
+        "smoker"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "mort_improve_factor",
+          "source": "self.mort_improve_factor(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "mort_loading",
+          "source": "self.mort_loading()",
+          "bound_args": []
+        },
+        {
+          "callee": "mort_basis",
+          "source": "self.mort_basis()",
+          "bound_args": []
+        },
+        {
+          "callee": "sex",
+          "source": "self.sex()",
+          "bound_args": []
+        },
+        {
+          "callee": "smoker",
+          "source": "self.smoker()",
+          "bound_args": []
+        },
+        {
+          "callee": "age",
+          "source": "self.age(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [
+        "self.data.mort_table()"
+      ],
+      "syntax_features": [
+        "provider-call",
+        "subscript"
+      ]
+    },
+    "mort_rate_mth": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "mort_rate"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "mort_rate",
+          "source": "self.mort_rate(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "net_cf": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "claims",
+        "commissions",
+        "expenses",
+        "premiums"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "commissions",
+          "source": "self.commissions(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "expenses",
+          "source": "self.expenses(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "premiums",
+          "source": "self.premiums(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "claims",
+          "source": "self.claims(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "kind",
+              "source": "None",
+              "origin": "default",
+              "relation": "default"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "payments_expected": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cessation_mths"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "payments_made": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "cessation_mths"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "policy_year": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "duration"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "duration",
+          "source": "self.duration(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_all": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "pols_if",
+        "pols_pu"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "pols_pu",
+          "source": "self.pols_pu(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_convert": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "pols_exit",
+        "pu_eligible"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pu_eligible",
+          "source": "self.pu_eligible(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "pols_exit",
+          "source": "self.pols_exit(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_death": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "mort_rate_mth",
+        "pols_if"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_exit": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "lapse_rate_mth",
+        "pols_if_at"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_if_at",
+          "source": "self.pols_if_at(t, 'BEF_LAPSE')",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            },
+            {
+              "parameter": "timing",
+              "source": "'BEF_LAPSE'",
+              "origin": "explicit",
+              "relation": "literal"
+            }
+          ]
+        },
+        {
+          "callee": "lapse_rate_mth",
+          "source": "self.lapse_rate_mth(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_if": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "lapse_rate_mth",
+        "mort_rate_mth",
+        "pols_if",
+        "pols_if_init",
+        "proj_len"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_if_init",
+          "source": "self.pols_if_init()",
+          "bound_args": []
+        },
+        {
+          "callee": "proj_len",
+          "source": "self.proj_len()",
+          "bound_args": []
+        },
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "lapse_rate_mth",
+          "source": "self.lapse_rate_mth(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pols_if_at": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        },
+        {
+          "name": "timing",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t",
+        "timing"
+      ],
+      "dependencies": [
+        "mort_rate_mth",
+        "pols_if",
+        "proj_len"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t + 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t + 1",
+              "origin": "explicit",
+              "relation": "affine:t:+1"
+            }
+          ]
+        },
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "proj_len",
+          "source": "self.proj_len()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "raise"
+      ]
+    },
+    "pols_if_init": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "pols_pu": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "mort_rate_mth",
+        "pols_convert",
+        "pols_pu",
+        "proj_len",
+        "pu_variant"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pols_convert",
+          "source": "self.pols_convert(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "proj_len",
+          "source": "self.proj_len()",
+          "bound_args": []
+        },
+        {
+          "callee": "pu_variant",
+          "source": "self.pu_variant()",
+          "bound_args": []
+        },
+        {
+          "callee": "pols_pu",
+          "source": "self.pols_pu(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "prem_cum_pp": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "prem_cum_pp",
+        "premium_pp"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "prem_cum_pp",
+          "source": "self.prem_cum_pp(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "premium_pp",
+          "source": "self.premium_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "premium_mth": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "premium_pp": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "cessation_mths",
+        "esc_prem_step",
+        "policy_year",
+        "premium_mth"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "premium_mth",
+          "source": "self.premium_mth()",
+          "bound_args": []
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        },
+        {
+          "callee": "esc_prem_step",
+          "source": "self.esc_prem_step()",
+          "bound_args": []
+        },
+        {
+          "callee": "policy_year",
+          "source": "self.policy_year(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "premiums": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "pols_if",
+        "premium_pp"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "premium_pp",
+          "source": "self.premium_pp(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "pols_if",
+          "source": "self.pols_if(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "proj_len": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "age_at_entry"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "age_at_entry",
+          "source": "self.age_at_entry()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pu_benefit": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "benefit_pp",
+        "mort_rate_mth",
+        "pols_convert",
+        "proj_len",
+        "pu_benefit",
+        "pu_variant"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "proj_len",
+          "source": "self.proj_len()",
+          "bound_args": []
+        },
+        {
+          "callee": "pu_variant",
+          "source": "self.pu_variant()",
+          "bound_args": []
+        },
+        {
+          "callee": "pu_benefit",
+          "source": "self.pu_benefit(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "pols_convert",
+          "source": "self.pols_convert(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        },
+        {
+          "callee": "benefit_pp",
+          "source": "self.benefit_pp(t - 1, 'PAID_UP')",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            },
+            {
+              "parameter": "kind",
+              "source": "'PAID_UP'",
+              "origin": "explicit",
+              "relation": "literal"
+            }
+          ]
+        },
+        {
+          "callee": "mort_rate_mth",
+          "source": "self.mort_rate_mth(t - 1)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t - 1",
+              "origin": "explicit",
+              "relation": "affine:t:-1"
+            }
+          ]
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pu_eligible": {
+      "parameters": [
+        {
+          "name": "t",
+          "default": null
+        }
+      ],
+      "cache_key": [
+        "t"
+      ],
+      "dependencies": [
+        "payments_expected",
+        "payments_made",
+        "pu_variant"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "pu_variant",
+          "source": "self.pu_variant()",
+          "bound_args": []
+        },
+        {
+          "callee": "payments_made",
+          "source": "self.payments_made(t)",
+          "bound_args": [
+            {
+              "parameter": "t",
+              "source": "t",
+              "origin": "explicit",
+              "relation": "param:t"
+            }
+          ]
+        },
+        {
+          "callee": "payments_expected",
+          "source": "self.payments_expected()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": []
+    },
+    "pu_variant": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "cessation_mths",
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        },
+        {
+          "callee": "cessation_mths",
+          "source": "self.cessation_mths()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "raise",
+        "subscript"
+      ]
+    },
+    "sex": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "smoker": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    },
+    "sum_assured": {
+      "parameters": [],
+      "cache_key": [],
+      "dependencies": [
+        "model_point"
+      ],
+      "dependency_call_sites": [
+        {
+          "callee": "model_point",
+          "source": "self.model_point()",
+          "bound_args": []
+        }
+      ],
+      "external_calls": [],
+      "syntax_features": [
+        "subscript"
+      ]
+    }
+  },
+  "formula_notes": [
+    "generator",
+    "provider-call",
+    "raise",
+    "subscript"
+  ]
+}

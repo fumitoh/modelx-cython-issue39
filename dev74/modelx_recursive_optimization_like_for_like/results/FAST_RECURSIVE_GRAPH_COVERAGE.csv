@@ -1,0 +1,6 @@
+model,target,graph_supported,build_s,cells,call_sites,unique_dependencies,max_call_arity,sccs,recursive_sccs,max_recursive_scc_size,external_calls,graph_blockers,formula_notes
+BasicTerm_S,pv_net_cf,True,0.023588448999817047,35,68,63,1,32,1,4,2,,generator;module-call;slice;subscript
+Term_UK_A,bench_net_cf,True,0.07113890600021477,57,127,114,2,51,6,7,4,,generator;provider-call;raise;subscript
+WOL_UK_S,bench_net_cf,True,0.05986194800016165,52,126,110,2,52,6,1,3,,generator;provider-call;raise;subscript
+ULSG_US_S,bench_net_cf,True,0.4885490930000742,102,223,209,2,88,8,6,12,,generator;module-call;provider-call;raise;subscript
+VA_US_S,bench_net_cf,True,0.7758735740003431,169,492,454,3,113,7,53,12,,generator;listcomp;module-call;provider-call;raise;subscript
